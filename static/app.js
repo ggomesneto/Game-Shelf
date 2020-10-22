@@ -30,6 +30,45 @@ $('#search_box').on('submit', async function(evt) {
 	$('#title').text(`Results for: ${searchText}`);
 });
 
+$('.platform').on('click', async function(evt) {
+	$('#result_search').empty();
+	evt.preventDefault();
+	let target = evt.target;
+	let platName = target.innerText.toLowerCase();
+	$('#title').text(platName.toUpperCase());
+	console.log(platName);
+	await getDataPlat(platName);
+});
+
+async function getDataPlat(platName) {
+	let platID = '';
+	if (platName === 'playstation 4') {
+		platID = 18;
+	} else if (platName === 'xbox one') {
+		platID = 1;
+	} else if (platName === 'pc') {
+		platID = 4;
+	} else if (platName === 'ios') {
+		platID = 3;
+	} else if (platName === 'android') {
+		platID = 21;
+	} else if (platName === 'nintendo switch') {
+		platID = 7;
+	}
+
+	let response = await axios.get(`${BASE_URL}/games?platforms=${platID}`);
+	console.log(response);
+	let gameArr = response.data.results;
+	nextPage = response.data.next;
+
+	let result = gameArr.map((game) => new Game(game));
+
+	for (let game of result) {
+		let gameHTML = generateCardHTML(game);
+		$('#result_search').append(gameHTML);
+	}
+}
+
 async function getDataGenre(genreName) {
 	let response = await axios.get(`${BASE_URL}/games?genres=${genreName}`);
 	let gameArr = response.data.results;
