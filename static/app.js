@@ -2,6 +2,8 @@ const genre = [ 'action', 'strategy', 'rpg', 'shooter', 'adventure', 'puzzle', '
 
 const BASE_URL = 'https://api.rawg.io/api';
 
+let nextPage = '';
+
 const startSearchUrl = 'https://api.rawg.io/api/games?dates=2020-01-01,2020-11-01&-ratings';
 
 $('.genre').on('click', async function(evt) {
@@ -31,6 +33,7 @@ $('#search_box').on('submit', async function(evt) {
 async function getDataGenre(genreName) {
 	let response = await axios.get(`${BASE_URL}/games?genres=${genreName}`);
 	let gameArr = response.data.results;
+	nextPage = response.data.next;
 
 	let result = gameArr.map((game) => new Game(game));
 
@@ -43,7 +46,7 @@ async function getDataGenre(genreName) {
 async function startSearch() {
 	let response = await axios.get(`${startSearchUrl}`);
 	let gameArr = response.data.results;
-	console.log(gameArr);
+	nextPage = response.data.next;
 	let result = gameArr.map((game) => new Game(game));
 
 	for (let game of result) {
@@ -62,7 +65,7 @@ function generateCardHTML(game) {
 	if (metacritic === null) {
 		metacritic = 'NA';
 	}
-	console.log(platforms);
+
 	let icon = '';
 	for (platform of platforms) {
 		if (platform.includes('PC')) {
@@ -102,7 +105,6 @@ function generateCardHTML(game) {
 			}
 		}
 	}
-	console.log(icon);
 
 	const gameMarkup = $(`
     
@@ -142,7 +144,7 @@ async function mainSearch() {
 	let $searchData = $('.form-control').val();
 	let response = await axios.get(`${BASE_URL}/games?search='${$searchData}'`);
 	let gameArr = response.data.results;
-	console.log(gameArr);
+	nextPage = response.data.next;
 	let result = gameArr.map((game) => new Game(game));
 
 	for (let game of result) {
@@ -165,3 +167,20 @@ class Game {
 }
 
 startSearch();
+
+// --------------------------------
+
+$('#main_content').scroll(async function() {
+	if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+		console.log('Bottom Reached');
+		let response = await axios.get(`${nextPage}`);
+		let gameArr = response.data.results;
+		nextPage = response.data.next;
+		let result = gameArr.map((game) => new Game(game));
+
+		for (let game of result) {
+			let gameHTML = generateCardHTML(game);
+			$('#result_search').append(gameHTML);
+		}
+	}
+});
