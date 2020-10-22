@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel='stylesheet' href='/static/app.css'>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    
+
+</head>
+<body>
+
+    <nav class="navbar sticky-top navbar-light">
+        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="#">Sign Up</a>
+        <a class="nav-link" href="#">Login</a>
+        <form id='search_box'>
+            <div class='search_input text-center'>
+                <input type='text' class='form-control' placeholder='Search Here'>
+            </div>
+
+        </form>
+    </nav>
+
+    <div id='main' class='container-fluid'>
+        <div id='lateral_menu' class='text-center'>
+            <h4>GENRE</h4>
+            <div class='container text-left'>
+                <a class="nav-link genre" href="/action"><i class="fas fa-khanda"></i>Action</a>
+                <a class="nav-link genre" href="/strategy"><i class="fas fa-chess-pawn"></i>Strategy</a>
+                <a class="nav-link genre" href="/role-playing-games-rpg"><i class="fas fa-dice"></i>RPG</a>
+                <a class="nav-link genre" href="/shooter"><i class="fas fa-crosshairs"></i>Shooter</a>
+                <a class="nav-link genre" href="/adventure"><i class="fas fa-gem"></i>Adventure</a>
+                <a class="nav-link genre" href="/puzzle"><i class="fas fa-puzzle-piece"></i>Puzzle</a>
+                <a class="nav-link genre" href="/racing"><i class="fas fa-flag-checkered"></i>Racing</a>
+                <a class="nav-link genre" href="/sports"><i class="fas fa-football-ball"></i>Sports</a>
+            </div>
+
+            <br>
+
+            <h4>PLATFORMS</h4>
+            <div class='container text-left'>
+                <a class="nav-link" href="#"><i class="fas fa-desktop"></i> PC</a>
+                <a class="nav-link" href="#"><i class="fab fa-playstation"></i> Playstation 4</a>
+                <a class="nav-link" href="#"><i class="fab fa-xbox"></i> Xbox One</a>
+                <a class="nav-link" href="#"><i class="fab fa-neos"></i> Nintendo Switch</a>
+                <a class="nav-link" href="#"><i class="fab fa-apple"></i> IOS</a>
+                <a class="nav-link" href="#"><i class="fab fa-android"></i> Android</a>
+            </div>
+            
+            
+            
+        
+        </div>
+
+
+        <div id='main_content'>
+            
+                      
+            {% block content %}
+            {% endblock %}  
+
+
+
+
+
+        </div>
+    </div>
+  
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src='/static/app.js'></script>
+    
+</body>
+</html>

@@ -1,0 +1,93 @@
+body {
+	background-color: black;
+	color: white;
+	font-family: 'Roboto', sans-serif;
+}
+
+.nav-link {
+	color: white;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.search_input {
+	width: 80vw;
+}
+
+.form-control {
+	border-radius: 15px;
+	background-color: hsla(0, 0%, 100%, .16);
+	border: 0px;
+	color: hsla(0, 0%, 100%, .6);
+	transition: 0.5s ease;
+}
+
+.form-control:hover {
+	background-color: white;
+}
+
+#lateral_menu {
+	width: 15vw;
+	/* border: 2px solid white; */
+}
+
+#main_content {
+	width: 90vw;
+	height: 90vh;
+}
+
+#main {
+	display: flex;
+}
+
+/* __________________________________________ */
+
+.card {
+	background-color: #202020;
+	position: absolute;
+	height: 600px;
+	transition: 0.5s ease;
+	width: 22rem;
+}
+
+.card:hover {
+	z-index: 1;
+}
+
+.card_search {
+	overflow: hidden;
+	height: 30vh;
+	margin-bottom: 20px;
+	transition: 0.5s ease;
+	min-height: 240px;
+}
+
+.card_search:hover {
+	overflow: visible;
+	z-index: 1;
+}
+
+.score {
+	float: right;
+}
+
+.list-group-item {
+	background-color: transparent;
+	border-bottom: 1px solid grey;
+	padding-left: 0px;
+}
+
+.card_list {
+	padding: 0px;
+}
+
+img {
+	max-height: 160px;
+}
+
+.card-data {
+	float: right;
+}
+
+i {
+	margin: 5px;
+}
