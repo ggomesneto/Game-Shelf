@@ -36,7 +36,7 @@ $('.platform').on('click', async function(evt) {
 	let target = evt.target;
 	let platName = target.innerText.toLowerCase();
 	$('#title').text(platName.toUpperCase());
-	console.log(platName);
+
 	await getDataPlat(platName);
 });
 
@@ -57,7 +57,7 @@ async function getDataPlat(platName) {
 	}
 
 	let response = await axios.get(`${BASE_URL}/games?platforms=${platID}`);
-	console.log(response);
+
 	let gameArr = response.data.results;
 	nextPage = response.data.next;
 
