@@ -42,19 +42,11 @@ $('.platform').on('click', async function(evt) {
 
 async function getDataPlat(platName) {
 	let platID = '';
-	if (platName === 'playstation 4') {
-		platID = 18;
-	} else if (platName === 'xbox one') {
-		platID = 1;
-	} else if (platName === 'pc') {
-		platID = 4;
-	} else if (platName === 'ios') {
-		platID = 3;
-	} else if (platName === 'android') {
-		platID = 21;
-	} else if (platName === 'nintendo switch') {
-		platID = 7;
-	}
+
+	let platList = [ 'playstation 4', 'xbox one', 'pc', 'ios', 'android', 'nintendo switch' ];
+	let platIDList = [ 18, 1, 4, 3, 21, 7 ];
+
+	platID = platIDList[platList.indexOf(platName)];
 
 	let response = await axios.get(`${BASE_URL}/games?platforms=${platID}`);
 
