@@ -29,23 +29,29 @@ body {
 	background-color: white;
 }
 
-#lateral_menu {
-	width: 15vw;
-}
-
 #main_content {
-	width: 90vw;
+	width: 85vw;
 	height: 90vh;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
 
 #main {
-	display: flex;
-	position: relative;
+	display: grid;
+	grid-template-columns: minmax(250px, 25%) auto;
 }
 
 /* __________________________________________ */
+
+#title {
+	font-size: clamp(3rem, 7vw, 7vw);
+}
+
+#result_search {
+	display: grid;
+	grid-gap: 0.5rem;
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
 
 .card {
 	background-color: #202020;
@@ -65,6 +71,7 @@ body {
 	margin-bottom: 20px;
 	transition: 0.5s ease;
 	min-height: 240px;
+	padding: 5px;
 }
 
 .card_search:hover {

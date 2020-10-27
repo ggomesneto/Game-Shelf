@@ -6,6 +6,23 @@ let nextPage = '';
 
 const startSearchUrl = 'https://api.rawg.io/api/games?dates=2020-01-01,2020-11-01&-ratings';
 
+let platList = [];
+
+let platIDList = [];
+
+const playstation = '<i class="fab fa-playstation"></i>';
+const pc = '<i class="fas fa-desktop"></i>';
+const xbox = '<i class="fab fa-xbox"></i>';
+const nSwitch = '<i class="fab fa-neos"></i>';
+const android = '<i class="fab fa-android"></i>';
+const ios = '<i class="fab fa-apple"></i>';
+
+let platIcon = [ pc, playstation, xbox, nSwitch, android, ios ];
+
+getPlatInfo();
+
+// ------------------------------------------------
+
 $('.genre').on('click', async function(evt) {
 	$('#result_search').empty();
 	evt.preventDefault();
@@ -42,9 +59,6 @@ $('.platform').on('click', async function(evt) {
 
 async function getDataPlat(platName) {
 	let platID = '';
-
-	let platList = [ 'playstation 4', 'xbox one', 'pc', 'ios', 'android', 'nintendo switch' ];
-	let platIDList = [ 18, 1, 4, 3, 21, 7 ];
 
 	platID = platIDList[platList.indexOf(platName)];
 
@@ -98,41 +112,16 @@ function generateCardHTML(game) {
 	}
 
 	let icon = '';
+
 	for (platform of platforms) {
-		if (platform.includes('PC')) {
-			if (icon.includes('<i class="fas fa-desktop"></i>')) {
+		let index = platList.indexOf(platform.toLowerCase());
+		if (index === -1) {
+		} else {
+			let iconHTML = platIcon[index];
+
+			if (icon.includes(iconHTML)) {
 			} else {
-				icon = icon.concat('<i class="fas fa-desktop"></i>');
-			}
-		}
-		if (platform.includes('PlayStation')) {
-			if (icon.includes('<i class="fab fa-playstation"></i>')) {
-			} else {
-				icon = icon.concat('<i class="fab fa-playstation"></i>');
-			}
-		}
-		if (platform.includes('Xbox')) {
-			if (icon.includes('<i class="fab fa-xbox"></i>')) {
-			} else {
-				icon = icon.concat('<i class="fab fa-xbox"></i>');
-			}
-		}
-		if (platform.includes('Switch')) {
-			if (icon.includes('<i class="fab fa-neos"></i>')) {
-			} else {
-				icon = icon.concat('<i class="fab fa-neos"></i>');
-			}
-		}
-		if (platform.includes('IOS')) {
-			if (icon.includes('<i class="fab fa-apple"></i>')) {
-			} else {
-				icon = icon.concat('<i class="fab fa-apple"></i>');
-			}
-		}
-		if (platform.includes('Android')) {
-			if (icon.includes('<i class="fab fa-android"></i>')) {
-			} else {
-				icon = icon.concat('<i class="fab fa-android"></i>');
+				icon = icon.concat(iconHTML);
 			}
 		}
 	}
@@ -181,6 +170,26 @@ async function mainSearch() {
 	for (let game of result) {
 		let gameHTML = generateCardHTML(game);
 		$('#result_search').append(gameHTML);
+	}
+}
+
+async function getPlatInfo() {
+	let response = await axios.get('https://api.rawg.io/api/platforms');
+	let result = response.data.results;
+	let platformsInfo = result.map((platform) => [ platform.name.toLowerCase(), platform.id ]);
+
+	let $platforms = $('.platform');
+
+	for (platform of $platforms) {
+		platList.push(platform.innerText.toLowerCase());
+	}
+
+	for (plat of platList) {
+		for (i = 0; i < platformsInfo.length; i++) {
+			if (plat === platformsInfo[i][0]) {
+				platIDList.push(platformsInfo[i][1]);
+			}
+		}
 	}
 }
 
