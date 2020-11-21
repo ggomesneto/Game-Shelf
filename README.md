@@ -28,6 +28,23 @@ Since this is a student's project, I'll try to comment as much as possible on th
 
 **GAME SHELF** is a game library that shows information about games, platforms, game genres and more specific data, such as game released date, or developers name. The users will be able to search for the information they need, create an account and post reviews, rate games and add games to their personal collection.
 
+### REQUIREMENTS
+
+You can find a list of requirements under the requirements.txt file, but I decided to add the list here too.
+
+- blinker==1.4
+- certifi==2020.11.8
+- chardet==3.0.4
+- click==7.1.2
+- Flask==1.1.2
+- Flask-DebugToolbar==0.11.0
+- idna==2.10
+- itsdangerous==1.1.0
+- Jinja2==2.11.2
+- MarkupSafe==1.1.1
+- requests==2.25.0
+- urllib3==1.26.2
+- Werkzeug==1.0.1
  
 ## API: 
 **https://rawg.io/apidocs**
