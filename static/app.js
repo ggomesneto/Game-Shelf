@@ -1,10 +1,11 @@
-const genre = [ 'action', 'strategy', 'rpg', 'shooter', 'adventure', 'puzzle', 'racing', 'sports' ];
+// SOME VARIABLES NEED TO BE HARD CODED DUE TO THE API SCHEMA.
 
 const BASE_URL = 'https://api.rawg.io/api';
 
+// EACH API REQUEST SEND A LINK FOR THE 'NEXT PAGE' RESULTS. I ADDED A EMPTY VARIABLE SO I CAN USE THE DATA GLOBALLY
 let nextPage = '';
 
-// GETTING DATES
+// GETTING DATES FOR THE FIRST SEARCH - TRENDING ON THE LAST YEAR
 
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
@@ -14,13 +15,17 @@ var yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 
 yyyy = String(parseInt(yyyy) - 1);
-next = yyyy + '-' + mm + '-' + dd;
+let lastyear = yyyy + '-' + mm + '-' + dd;
 
-const startSearchUrl = `https://api.rawg.io/api/games?dates=${next},${today}&-ratings`;
+const startSearchUrl = `https://api.rawg.io/api/games?dates=${lastyear},${today}&-ratings`;
+
+// EACH PLATFORM HAS AN ID ON THE API. THE IDS ARE NOT IN SEQUENCE, SO I HAVE TO GET THEM ALL, FILL AN ARRAY WITH THE NAMES I WANT AND THEN CHECK THE IDS OF EACH PLATFORM INDIVIDUALLY. THE ARRAYS ARE OUT OF THE FUNCTION, SO I CAN USE THEM GLOBALLY.
 
 let platList = [];
 
 let platIDList = [];
+
+// EACH PLATFORM HAS ITS OWN MARKUP FOR THE ICON FROM FONT AWESOME
 
 const playstation = '<i class="fab fa-playstation"></i>';
 const pc = '<i class="fas fa-desktop"></i>';
@@ -31,8 +36,9 @@ const ios = '<i class="fab fa-apple"></i>';
 
 let platIcon = [ pc, playstation, xbox, nSwitch, android, ios ];
 
-// ------------------------------------------------
+// ---------------------------------------------- FUNCTIONS ------------------------------------------------
 
+//THIS USES THE TITLE OF THE PAGE TO KNOW THE CORRECT GENRE TO BE SEARCHED. IT CALLS getDataGenre TO GET THE GAMES
 async function getGenre() {
 	$('#result_search').empty();
 
@@ -46,6 +52,23 @@ async function getGenre() {
 	await getDataGenre(genreName);
 }
 
+// MAKES A REQUEST FOR THE GENRE, SAVES NEXTPAGE, MAPS THE RESULTS USING THE CLASS GAME, AND THEN APPEND THE RESULTS ON THE PAGE
+async function getDataGenre(genreName) {
+	let response = await axios.get(`${BASE_URL}/games?genres=${genreName}`);
+
+	let gameArr = response.data.results;
+
+	nextPage = response.data.next;
+
+	let result = gameArr.map((game) => new Game(game));
+
+	for (let game of result) {
+		let gameHTML = generateCardHTML(game);
+		$('#result_search').append(gameHTML);
+	}
+}
+
+//THIS USES THE TITLE OF THE PAGE TO KNOW WHAT NEEDS TO BE SEARCHED. IT CALLS mainSearch TO GET THE GAMES
 async function searchBox() {
 	$('#result_search').empty();
 
@@ -55,6 +78,45 @@ async function searchBox() {
 	await mainSearch(searchText);
 }
 
+// MAKES A REQUEST FOR THE SEARCH DATA, SAVES NEXTPAGE, MAPS THE RESULTS USING THE CLASS GAME, AND THEN APPEND THE RESULTS ON THE PAGE
+async function mainSearch(searchText) {
+	let response = await axios.get(`${BASE_URL}/games?search='${searchText}'`);
+	let gameArr = response.data.results;
+	nextPage = response.data.next;
+	let result = gameArr.map((game) => new Game(game));
+
+	for (let game of result) {
+		let gameHTML = generateCardHTML(game);
+		$('#result_search').append(gameHTML);
+	}
+}
+
+// MAKES A REQUEST TO GET THE PLATFORMS LIST.
+//  - MAP THE RESULTS
+//  - GETS ALL THE PLATFORMS ON THE MENUS, USING THE CLASS .PLATFORMS
+//  - COMPARE THE LIST FROM THE REQUEST WITH THE LIST FROM THE CLASSES AND GET THE IDS FOR THE PLATFORMS THAT MATCH
+
+async function getPlatInfo() {
+	let response = await axios.get('https://api.rawg.io/api/platforms');
+	let result = response.data.results;
+	let platformsInfo = result.map((platform) => [ platform.name.toLowerCase(), platform.id ]);
+
+	let $platforms = $('.platform');
+
+	for (platform of $platforms) {
+		platList.push(platform.innerText.toLowerCase());
+	}
+
+	for (plat of platList) {
+		for (i = 0; i < platformsInfo.length; i++) {
+			if (plat === platformsInfo[i][0]) {
+				platIDList.push(platformsInfo[i][1]);
+			}
+		}
+	}
+}
+
+//THIS USES THE TITLE OF THE PAGE TO KNOW WHAT NEEDS TO BE SEARCHED. IT CALLS getDataPlat TO GET THE GAMES
 async function getPlatform() {
 	$('#result_search').empty();
 
@@ -63,6 +125,12 @@ async function getPlatform() {
 
 	await getDataPlat(platName);
 }
+
+//  - AWAITS FOR getPlatInfo SO IT CAN USE THE ID LISTS
+//  - USES THE PLATFORM ID LIST TO GET THE CORRECT ID BASED IN WHAT NEEDS TO BE SEARCHED
+//  - MAKES A REQUEST WITH THE CORRECT ID
+//  - MAP IT USING THE CLASS GAME
+//  - APPEND TO THE PAGE
 
 async function getDataPlat(platName) {
 	let platID = '';
@@ -84,21 +152,7 @@ async function getDataPlat(platName) {
 	}
 }
 
-async function getDataGenre(genreName) {
-	let response = await axios.get(`${BASE_URL}/games?genres=${genreName}`);
-
-	let gameArr = response.data.results;
-
-	nextPage = response.data.next;
-
-	let result = gameArr.map((game) => new Game(game));
-
-	for (let game of result) {
-		let gameHTML = generateCardHTML(game);
-		$('#result_search').append(gameHTML);
-	}
-}
-
+// PRIMARY SEARCH FOR WHEN YOU OPEN THE MAIN PAGE - USES THE STARTSEARCHURL.
 async function startSearch() {
 	let response = await axios.get(`${startSearchUrl}`);
 	let gameArr = response.data.results;
@@ -110,6 +164,8 @@ async function startSearch() {
 		$('#result_search').append(gameHTML);
 	}
 }
+
+//CREATES THE MARKUP FOR EACH GAME CARD
 
 function generateCardHTML(game) {
 	let gameName = game.name;
@@ -185,40 +241,7 @@ function generateCardHTML(game) {
 	return gameMarkup;
 }
 
-async function mainSearch(searchText) {
-	let response = await axios.get(`${BASE_URL}/games?search='${searchText}'`);
-	let gameArr = response.data.results;
-	nextPage = response.data.next;
-	let result = gameArr.map((game) => new Game(game));
-
-	for (let game of result) {
-		let gameHTML = generateCardHTML(game);
-		$('#result_search').append(gameHTML);
-	}
-}
-
-async function getPlatInfo() {
-	// 	GET LIST OF PLATFORM IDS TO BE USED LATER TO GET THE GAMES
-
-	let response = await axios.get('https://api.rawg.io/api/platforms');
-	let result = response.data.results;
-	let platformsInfo = result.map((platform) => [ platform.name.toLowerCase(), platform.id ]);
-
-	let $platforms = $('.platform');
-
-	for (platform of $platforms) {
-		platList.push(platform.innerText.toLowerCase());
-	}
-
-	for (plat of platList) {
-		for (i = 0; i < platformsInfo.length; i++) {
-			if (plat === platformsInfo[i][0]) {
-				platIDList.push(platformsInfo[i][1]);
-			}
-		}
-	}
-}
-
+//CLASS THAT ORGANIZES EACH GAME AFTER RETRIEVED FROM THE API.
 class Game {
 	constructor(gameObj) {
 		this.name = gameObj.name;
@@ -234,7 +257,7 @@ class Game {
 	}
 }
 
-// ------------INFINITE SCROLL---------------
+// THIS FUNCTION IS A INFINITE SCROLL THAT USES THE NEXTPAGE DATA TO MAKE AN API CALL WHENEVER THE USER SCROLLS TO THE END OF THE PAGE.
 
 $('#main_content').scroll(async function() {
 	if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
@@ -250,7 +273,7 @@ $('#main_content').scroll(async function() {
 	}
 });
 
-// -------------MEDIA QUERY FOR MENU ---------------
+// MEDIA QUERY FOR MENU - MADE HERE INSTEAD OF ON THE CSS FILE JUST TO SHOW THAT IT CAN BE DONE. IT HIDES ONE MENU AND SHOWS ANOTHER DEPENDING ON TH WINDOW SIZE
 
 function mediaQuery(x) {
 	if (x.matches) {

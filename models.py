@@ -15,18 +15,30 @@ class User(db.Model):
     username = db.Column(db.Text, primary_key=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
+    dob = db.Column(db.Date)
+    email - db.Column(db.Text, nullable=False)
 
-    favorites = db.relationship('Favorite')
+    favorites = db.relationship('Collection')
+    reviews = db.relationship('Review')
 
     def __repr__(self):
         return f"<User {self.username} {self.first_name} {self.last_name}>"
 
-class Favorite(db.Model):
+class Collection(db.Model):
 
-    __tablename__ = 'favorites'
+    __tablename__ = 'collections'
 
-    username = db.Column(db.Text, db.ForeignKey('User.username'), primary_key=True)
-    game_slug = db.Column(db.Text, nullable=False, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.Text, db.ForeignKey('User.username'))
+    game_slug = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return f"<favorite {self.username} {self.game_slug}"
+
+class Review(db.Model):
+
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.Text, db.ForeignKey('User.username'))
+    game_slug = db.Column(db.Text, nullable=False)
