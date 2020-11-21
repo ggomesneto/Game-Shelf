@@ -2,9 +2,9 @@
 ---
 
 
-##ABOUT ME
+## ABOUT ME
 
-##ABOUT THE PROJECT
+## ABOUT THE PROJECT
 
 The intention of this project is to create a Full-Stack application using all the technologies learned up to this point (~35%) on **Springboard's Software Engineering Career Track course**. 
 
@@ -24,12 +24,12 @@ This project, called **GAME SHELF** uses the following technologies:
 
 Since this is a student's project, I'll try to comment as much as possible on the code, and an expert eye will notice that the code will have the same process written in different ways. The idea behind that is to show the different possibilities of getting to the same output ( An example is using AJAX to make API calls and also make API requests on the Backend, using FLASK requests ).
 
-###THE SITE
+### THE SITE
 
 **GAME SHELF** is a game library that shows information about games, platforms, game genres and more specific data, such as game released date, or developers name. The users will be able to search for the information they need, create an account and post reviews, rate games and add games to their personal collection.
 
  
-##API: 
+## API: 
 **https://rawg.io/apidocs**
 
 ##Database draft:
