@@ -32,7 +32,7 @@ Since this is a student's project, I'll try to comment as much as possible on th
 ## API: 
 **https://rawg.io/apidocs**
 
-##Database draft:
+## Database draft:
 
 	from flask_sqlalchemy import SQLAlchemy
 
