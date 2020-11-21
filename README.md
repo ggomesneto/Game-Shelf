@@ -1,6 +1,6 @@
 # GAME SHELF - CAPSTONE PROJECT - GERALDO GOMES
 ---
-
+![Main Page](https://github.com/ggomesneto/capstone1/blob/main/Game%20Shelf.jpeg)
 
 ## ABOUT ME
 
