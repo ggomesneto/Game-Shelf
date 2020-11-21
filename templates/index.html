@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
+{% block title %}
+
+<span id='title' class=''>{{ title }}</span>
+
+{% endblock %}
+
+
 {% block content %}
-<span id='title' class=''>NEW AND TRENDING</span>
+
 <br>
 
 <br>
@@ -9,4 +16,9 @@
 <div id='result_search' class=''>
 
 </div>
+
+
+
 {% endblock %}
+
+{% block script %}{{ function }}{% endblock %}

@@ -1,16 +1,21 @@
 body {
-	background-color: black;
+	background-color: #151515;
 	color: white;
 	font-family: 'Roboto', sans-serif;
+	height: 100vh;
 }
 
 .navbar {
-	background-color: black;
+	background-color: #151515;
 }
 
 .nav-link {
 	color: white;
 	font-family: 'Montserrat', sans-serif;
+}
+
+i {
+	color: #86df81;
 }
 
 .search_input {
@@ -34,6 +39,7 @@ body {
 	height: 90vh;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	position: relative;
 }
 
 #main {
@@ -44,7 +50,7 @@ body {
 /* __________________________________________ */
 
 #title {
-	font-size: clamp(3rem, 7vw, 7vw);
+	font-size: clamp(3rem, 6vw, 6vw);
 }
 
 #result_search {
@@ -56,9 +62,12 @@ body {
 .card {
 	background-color: #202020;
 	position: absolute;
-	height: 600px;
+	height: 400px;
 	transition: 0.5s ease;
 	width: 22rem;
+	left: 50%;
+	transform: translateX(-50%);
+	border-radius: 20px;
 }
 
 .card:hover {
@@ -67,7 +76,7 @@ body {
 
 .card_search {
 	overflow: hidden;
-	height: 30vh;
+	height: 310px;
 	margin-bottom: 20px;
 	transition: 0.5s ease;
 	min-height: 240px;
@@ -93,6 +102,10 @@ body {
 	padding: 0px;
 }
 
+.card-img-top {
+	border-top-left-radius: 30px;
+	border-top-right-radius: 20px;
+}
 img {
 	max-height: 160px;
 }
@@ -101,10 +114,81 @@ img {
 	float: right;
 }
 
+.card-data:hover {
+	text-decoration: underline;
+}
+
+.card-body a {
+	color: white;
+}
+
+.card-title {
+	height: 50px;
+	margin-bottom: 0;
+	vertical-align: middle;
+}
+
 i {
 	margin: 5px;
 }
 
+small {
+	font-size: 70%;
+}
+
+#game_info {
+	width: 60%;
+	height: 100%;
+	font-family: 'Exo', sans-serif;
+
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+	float: left;
+}
+
+#opacity-back {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	background-color: black;
+	opacity: 0.7;
+	z-index: -1;
+}
+
+#buttons {
+	width: 100%;
+	text-align: center;
+}
+#about {
+	display: inline-block;
+}
+
+#game_sub_info {
+	float: left;
+	width: 100%;
+	height: 50%;
+
+	position: relative;
+}
+
+#game_sub_info strong {
+	color: rgba(255, 255, 255, 0.548);
+	font-family: 'Roboto', sans-serif;
+}
+
+#game_images img {
+	width: 200px;
+	height: 130px;
+	margin: 5px;
+	border-radius: 15px;
+}
+
+#game_stores button {
+	margin: 5px;
+}
 /* ------------SCROLLBAR-------------- */
 
 #main_content::-webkit-scrollbar-track {
@@ -122,4 +206,34 @@ i {
 	border-radius: 10px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
 	background-color: #555;
+}
+
+#add-review,
+#favorite {
+	margin: 5px;
+}
+/* ------LOGIN----- */
+
+#loginWrap {
+	width: 600px;
+	height: 400px;
+	background-color: #202020;
+	position: relative;
+	left: 20vw;
+	top: 20vh;
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+#loginForm,
+#createAcc {
+	display: grid;
+	place-items: center;
+}
+#loginForm {
+	border-right: 2px solid lightgray;
+}
+
+#loginForm div,
+#createAcc div {
+	width: 70%;
 }

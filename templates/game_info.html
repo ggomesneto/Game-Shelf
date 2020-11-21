@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+<span id='title' class=''>{{ title }}</span>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div id='game_info'>
+
+    <div class='row'>
+        <div class='col'>
+
+            <div id='game_info_left'>
+                <div id='buttons' class='text-center'>
+                    <button type="button" class="btn btn-lg btn-light"><small>Write a</small><br>Review</button>
+                    <button type="button" class="btn btn-lg btn-light"><small>Save to</small><br>My games</button>
+                </div>
+                <br>
+                <div id='about'>
+                   {{ description }}
+                </div>
+        
+        
+                <div id='game_sub_info'>
+                   
+                    <div class="row">
+                        <div class="col">
+                                <div id='game_platforms'>
+                                    <div><strong>Platforms</strong></div>
+                                    {% for p in platforms %}
+                                    <span>{{ p['platform']['name'] }} </span>
+                                    {% if not loop.last %}
+                                    ,
+                                    {% endif %}
+                                    {% endfor %}    
+                                </div>
+                                <br>
+                                <div id ='game_genres'>
+                                    <div><strong>Genres</strong></div>
+                                    {% for g in genres %}
+                                    <span>{{ g['name'] }}</span>
+                                    {% if not loop.last %}
+                                    ,
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <br>
+                                <div id ='game_developers'>
+                                    <div><strong>Developers</strong></div>
+                                    {% for d in developers%}
+                                    <span> {{ d['name']}} </span>
+                                    {% endfor %}
+                                </div>
+                                <br>
+                                <div id='esrb_rating'>
+                                    <div><strong>Rating</strong></div>
+                
+                                    <span> {{ esrb_rating['name'] }}</span>
+                
+                                </div>
+                                
+                        </div>
+                        <div class="col">
+                                <div id='game_metacritic'>
+                                    <div><strong>Metascore</strong></div>
+                                    <span> {{ metacritic }}</span>
+                                </div>
+                                <br>
+                                <div id='game_publishers'>
+                                    <div><strong>Publishers</strong></div>
+        
+                                    {% for p in publishers %}
+                                    <span> {{ p['name'] }}</span>
+                                    {% endfor %}
+                                </div>
+                                <br>
+                                <div id='game_released'>
+                                    <div><strong>RELEASED DATA</strong></div>
+        
+                                    {{ released }}
+                                </div>
+                                <br>
+                                <div id='game_website'>
+                                    <div><strong>Website</strong></div>
+                                    <a href='{{website}}' target='_blank'><small>{{ website }}</small></a>
+                                </div>
+                                
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+
+        </div>
+        <div class='col'>
+
+            <div id='game_info_right'>
+                
+                <div id='game_images'>
+                    {% for i in images %}
+                    <a href="{{ i }}"><img src="{{ i }}"></a>
+                    {% endfor %}
+                    
+                </div>
+                <br>
+                <br>
+                    <div id='game_stores'>
+                        <div><strong>Where to buy</strong></div>
+                        {%for s in stores %}
+                        <a href="{{ s['url'] }}" target='_blank'>
+                            <button type="button" class="btn btn-secondary">{{ s['store']['name']}}</button>
+                        </a>
+                        {% endfor %}
+                    </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <br>
+    <div class='row'>
+        <div class='col'>
+            <div id='game_reviews'>
+                <H2>REVIEWS</H2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %} 
+<script>
+    console.log('aaa')
+$('body').css('background-image', `url('{{ images[0] }}')`)
+$('body').css('background-size', `100% 100%`)
+
+</script>
+{% endblock %}
