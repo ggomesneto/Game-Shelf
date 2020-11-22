@@ -132,10 +132,10 @@
 
                 <div class='review_card_page'>
                     <div class='review_title'>{{ review.title }}</div>
-                    <div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
+                    <div class='review_game'>{{ review.game_name }}</div>
                     
                     <div class='review_text'>{{ review.review }}</div>
-                    <div class='review_user'><a href='/{{ review.username }}/collection'><small>Created by: >{{ review.username }}</small></a></div>
+                    <div class='review_user'><small>Created by:<a href='/{{ review.username }}/collection'>{{ review.username }}</small></a></div>
                 </div>
 
                 {% endfor %}
