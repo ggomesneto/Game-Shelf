@@ -63,7 +63,7 @@ You can find a list of requirements under the requirements.txt file, but I decid
 
 	class User(db.Model):
 
-   	 __tablename__ = 'users'
+   	 	__tablename__ = 'users'
 
     	username = db.Column(db.Text, primary_key=True)
     	first_name = db.Column(db.Text, nullable=False)
@@ -81,7 +81,7 @@ You can find a list of requirements under the requirements.txt file, but I decid
     	__tablename__ = 'collections'
 
     	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-   	username = db.Column(db.Text, db.ForeignKey('users.username'))
+   		username = db.Column(db.Text, db.ForeignKey('users.username'))
     	game_slug = db.Column(db.Text, nullable=False)
 
     	def __repr__(self):
