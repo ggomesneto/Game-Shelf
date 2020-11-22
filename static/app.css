@@ -237,3 +237,57 @@ small {
 #createAcc div {
 	width: 70%;
 }
+
+/* REVIEW CARD */
+
+.review_card {
+	background-color: rgba(0, 0, 0, .5);
+	border-radius: 20px;
+	width: 50%;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.review_card_page {
+	background-color: rgba(0, 0, 0, .5);
+	border-radius: 20px;
+	width: 80%;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.review_title,
+.review_game,
+.review_user,
+.review_text {
+	margin: 10px;
+	margin-left: 30px;
+}
+
+.review_title {
+	font-size: 4em;
+}
+
+.review_game,
+.review_user,
+.review_text {
+	font-family: 'Exo', sans-serif;
+}
+
+.review_text {
+	color: hsla(0, 0%, 100%, .7);
+}
+
+#add_form {
+	width: 60%;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+#review_game_name {
+	background-color: transparent;
+	color: hsla(0, 0%, 100%, .6);
+}

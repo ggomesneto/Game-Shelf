@@ -16,7 +16,7 @@
 
             <div id='game_info_left'>
                 <div id='buttons' class='text-center'>
-                    <button type="button" class="btn btn-lg btn-light"><small>Write a</small><br>Review</button>
+                    <a href='/games/{{ slug }}/review'><button type="button" class="btn btn-lg btn-light"><small>Write a</small><br>Review</button></a>
                     <button type="button" class="btn btn-lg btn-light"><small>Save to</small><br>My games</button>
                 </div>
                 <br>
@@ -127,6 +127,18 @@
         <div class='col'>
             <div id='game_reviews'>
                 <H2>REVIEWS</H2>
+
+                {% for review in reviews %}
+
+                <div class='review_card_page'>
+                    <div class='review_title'>{{ review.title }}</div>
+                    <div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
+                    
+                    <div class='review_text'>{{ review.review }}</div>
+                    <div class='review_user'><small>Created by: {{ review.username }}</small></div>
+                </div>
+
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -137,7 +149,7 @@
 
 {% block script %} 
 <script>
-    console.log('aaa')
+   
 $('body').css('background-image', `url('{{ images[0] }}')`)
 $('body').css('background-size', `100% 100%`)
 

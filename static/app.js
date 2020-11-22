@@ -273,6 +273,38 @@ $('#main_content').scroll(async function() {
 	}
 });
 
+// THIS FUNCTION REMOVE SOME DIVS FROM THE HTML, ADDS A NEW BACKGROUND, GETS THE REVIEWS FROM THE DATABASE AND ADD THEM TO THE HTML
+
+async function getReviews() {
+	$('body').css('background-image', `url(/static/review_background.jpg)`);
+	$('body').css('background-size', `100% 100%`);
+	$('#result_search').remove();
+	$('#main_content').append(`<div id='reviews'></div>`);
+	$('#result_search').css('grid-template-columns', 'repeat(auto-fill, minmax(550px, 1fr))');
+	const resp = await axios.get(`http://127.0.0.1:5000/api/reviews`);
+	for (review of resp.data.reviews) {
+		let reviewMarkup = `
+	
+	<div class='review_card'>
+		<div class='review_title'>${review.title}</div>
+		<div class='review_game'><a href='/games/${review.game_slug}'>${review.game_name}</a></div>
+		
+		<div class='review_text'>${review.review}</div>
+		<div class='review_user'><small>Created by: ${review.username}</small></div>
+	</div>
+		
+	`;
+
+		$('#reviews').append(reviewMarkup);
+	}
+}
+
+$(document).on('keypress', '#add_form', function(e) {
+	if (e.which == 13) {
+		e.preventDefault();
+	}
+});
+
 // MEDIA QUERY FOR MENU - MADE HERE INSTEAD OF ON THE CSS FILE JUST TO SHOW THAT IT CAN BE DONE. IT HIDES ONE MENU AND SHOWS ANOTHER DEPENDING ON TH WINDOW SIZE
 
 function mediaQuery(x) {

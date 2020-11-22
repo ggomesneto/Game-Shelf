@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+<span id='title' class=''>{{ title }}</span>
+
+{% endblock %}
+
+
+{% block content %}
+
+<br>
+
+<br>
+
+<div id='add_form' class=''>
+
+    <form method="POST">
+        <div class="form-group">
+          <label for="game_name">Game:</label>
+          <input type="text" name='game_name' readonly class="form-control-plaintext" id="review_game_name" value="{{ name }}">
+        </div>
+        <div class="form-group">
+            <label for="username">Created By:</label>
+            <input type="text" name='username' class="form-control" id="review_username">
+        </div>
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" name='title' class="form-control" id="review_title">
+          </div>
+          <div class="form-group">
+            <label for="review">Review:</label>
+            <textarea rows=5 type="text" name='review' class="form-control" id="review_review"></textarea>
+          </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+
+
+
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}{{ function }}{% endblock %}
