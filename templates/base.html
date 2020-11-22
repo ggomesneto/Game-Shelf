@@ -23,8 +23,18 @@
     <div id='opacity-back'></div>
     <nav class="navbar sticky-top navbar-light">
         <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="#">Sign Up</a>
+        {% if 'username' not in session %}
+        <a class="nav-link" href="/register">Sign Up</a>
         <a class="nav-link" href="/login">Login</a>
+        {% endif %}
+
+        {% if 'username' in session %}
+        <a class='nav-link' href='#'>Profile</a>
+        <a class='nav-link' href="/{{ session['username'] }}/collection">Collection</a>
+        <a class='nav-link' href='/logout'>Logout</a>
+      
+        {% endif %}
+
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Menu

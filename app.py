@@ -1,9 +1,11 @@
 from flask import Flask, request, render_template, redirect, Markup, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
-from sqlalchemy import desc 
+from sqlalchemy import desc, exc
+
 
 from models import db, connect_db, User, Collection, Review
+from forms import RegisterForm, LoginForm
 
 
 app = Flask(__name__)
@@ -25,7 +27,6 @@ def default_page():
     title = 'New and Trending'
     function = Markup('<script>  getPlatInfo(); startSearch();</script>')
     return render_template('index.html', title=title, function=function)
-
 
 @app.route('/games/<id>')
 def games_route(id):
@@ -63,24 +64,29 @@ def games_route(id):
 @app.route('/games/<id>/review')
 def review_form(id):
 
-    resp = requests.get(f"https://rawg.io/api/games/{id}")
-    data = resp.json()
-    status = resp.status_code
-
-    # CHECK TO SEE IF THERE ARE RESULTS. IF NOT, REDIRECT TO MAIN PAGE
-    if status == 200:
-
-        name = data['name']
-        title = "Add Review"
-        game_slug = id
-        function = Markup('<script> addReview() </script>')
-
-        return render_template('review_form.html', game_slug=game_slug, title=title, function=function, name=name)
-
+    if 'username' not in session:
+        flash('You must be logged in to view')
+        return redirect('/login')
     
     else:
-        return redirect('/')
+        resp = requests.get(f"https://rawg.io/api/games/{id}")
+        data = resp.json()
+        status = resp.status_code
 
+        # CHECK TO SEE IF THERE ARE RESULTS. IF NOT, REDIRECT TO MAIN PAGE
+        if status == 200:
+
+            name = data['name']
+            title = "Add Review"
+            game_slug = id
+            username = session['username']
+            function = Markup('<script> addReview() </script>')
+
+            return render_template('review_form.html', game_slug=game_slug, title=title,function=function, name=name, username=username)
+
+
+        else:
+            return redirect('/')
 
 @app.route('/games/<id>/review', methods=['POST'])
 def add_review(id):
@@ -105,10 +111,6 @@ def add_review(id):
         db.session.commit()
 
         return redirect(f"/games/{id}")
-
-        
-
-
 
 @app.route('/genres/<id>')
 def genres_route(id):
@@ -162,7 +164,73 @@ def reviews_route():
 
     return render_template('index.html',title=title, function=function)
 
+@app.route('/login', methods=['GET','POST'])
+def login_route():
 
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        name = form.username.data
+        pwd = form.password.data
+
+        user = User.authenticate(name,pwd)
+
+        if user:
+            session['username'] = user.username
+            return redirect('/')
+        else:
+            form.username.errors = ['Bad name/password']
+
+
+    return render_template('login.html', form=form)
+
+@app.route('/register', methods=['GET','POST'])
+def register():
+    '''Register user: produce form & handle form submission'''
+
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        name = form.username.data
+        pwd = form.password.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+
+        user = User.register(name, pwd, first_name, last_name)
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+
+            session['username'] = user.username
+
+            # on a successfull login, redirect to main page
+            return redirect('/')
+
+        except exc.IntegrityError:
+            db.session.rollback()
+            flash(f"{name} already exists")
+            return redirect('/register')
+
+    else:
+        return render_template('register.html', form=form)
+
+@app.route('/logout')
+def logout():
+    session.pop('username')
+    return redirect('/')
+
+@app.route('/<id>/collection')
+def collection_page(id):
+
+    user = User.query.filter_by(username=id).first()
+
+    if user:
+        title=f"{user.username} Collection:"
+        function = Markup(f"<script> getPlatInfo(); getCollection('{id}')</script>")
+        return render_template('index.html', title=title, function=function)
+    else:
+        return redirect('/')
 
 
 # ----------------- ROUTES TO REQUEST DATA FROM DATABASE ---------------------
@@ -170,14 +238,17 @@ def reviews_route():
 def get_reviews():
 
     reviews = [review.serialize() for review in Review.query.order_by(desc(Review.id)).limit(10).all()]
-    print(reviews)
+    
     return jsonify(reviews=reviews)
     
+@app.route('/api/<id>/collection')
+def get_collection(id):
 
-# ADD TO DATABASE A QUERY THAT SHOWS USERS WITH THE SAME GAMES.MAYBE A PERSONAL CHAT OR SOMETHING
+    user = User.query.filter_by(username=id).first()
+    collection = [ favorite.serialize() for favorite in user.favorites] 
+
+    return jsonify(collection=collection)
 
 
-@app.route('/login')
-def login_route():
 
-    return render_template('login.html')
+    

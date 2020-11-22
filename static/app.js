@@ -166,7 +166,6 @@ async function startSearch() {
 }
 
 //CREATES THE MARKUP FOR EACH GAME CARD
-
 function generateCardHTML(game) {
 	let gameName = game.name;
 	let gameRel = game.released;
@@ -241,6 +240,50 @@ function generateCardHTML(game) {
 	return gameMarkup;
 }
 
+// THIS FUNCTION CREATES A FOR LOOP TO GET THE COLLECTION FROM THE USER.
+async function getCollection(id) {
+	let response = await axios.get(`/api/${id}/collection`);
+
+	let collection = response.data.collection;
+	let collectionArr = [];
+	for (game of collection) {
+		let apiCall = await axios.get(`${BASE_URL}/games/${game.game_slug}`);
+		collectionArr.push(apiCall.data);
+	}
+	let result = collectionArr.map((game) => new Game(game));
+	for (let game of result) {
+		let gameHTML = generateCardHTML(game);
+		$('#result_search').append(gameHTML);
+	}
+
+	// for (item of collection)
+}
+
+// THIS FUNCTION REMOVE SOME DIVS FROM THE HTML, ADDS A NEW BACKGROUND, GETS THE REVIEWS FROM THE DATABASE AND ADD THEM TO THE HTML
+async function getReviews() {
+	$('body').css('background-image', `url(/static/review_background.jpg)`);
+	$('body').css('background-size', `100% 100%`);
+	$('#result_search').remove();
+	$('#main_content').append(`<div id='reviews'></div>`);
+	$('#result_search').css('grid-template-columns', 'repeat(auto-fill, minmax(550px, 1fr))');
+	const resp = await axios.get(`http://127.0.0.1:5000/api/reviews`);
+	for (review of resp.data.reviews) {
+		let reviewMarkup = `
+	
+	<div class='review_card'>
+		<div class='review_title'>${review.title}</div>
+		<div class='review_game'><a href='/games/${review.game_slug}'>${review.game_name}</a></div>
+		
+		<div class='review_text'>${review.review}</div>
+		<div class='review_user'><small>Created by: <a href='/${review.username}/collection'>${review.username}</small></a></div>
+	</div>
+		
+	`;
+
+		$('#reviews').append(reviewMarkup);
+	}
+}
+
 //CLASS THAT ORGANIZES EACH GAME AFTER RETRIEVED FROM THE API.
 class Game {
 	constructor(gameObj) {
@@ -272,32 +315,6 @@ $('#main_content').scroll(async function() {
 		}
 	}
 });
-
-// THIS FUNCTION REMOVE SOME DIVS FROM THE HTML, ADDS A NEW BACKGROUND, GETS THE REVIEWS FROM THE DATABASE AND ADD THEM TO THE HTML
-
-async function getReviews() {
-	$('body').css('background-image', `url(/static/review_background.jpg)`);
-	$('body').css('background-size', `100% 100%`);
-	$('#result_search').remove();
-	$('#main_content').append(`<div id='reviews'></div>`);
-	$('#result_search').css('grid-template-columns', 'repeat(auto-fill, minmax(550px, 1fr))');
-	const resp = await axios.get(`http://127.0.0.1:5000/api/reviews`);
-	for (review of resp.data.reviews) {
-		let reviewMarkup = `
-	
-	<div class='review_card'>
-		<div class='review_title'>${review.title}</div>
-		<div class='review_game'><a href='/games/${review.game_slug}'>${review.game_name}</a></div>
-		
-		<div class='review_text'>${review.review}</div>
-		<div class='review_user'><small>Created by: ${review.username}</small></div>
-	</div>
-		
-	`;
-
-		$('#reviews').append(reviewMarkup);
-	}
-}
 
 $(document).on('keypress', '#add_form', function(e) {
 	if (e.which == 13) {

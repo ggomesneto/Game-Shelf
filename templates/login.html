@@ -2,32 +2,30 @@
 
 {% block content %}
 
+<h4 class='display-4'>Log in</h4>
+<p class='lead'>Welcome! Please log in.</p>
 
-<div id='loginWrap'>
+{% for msg in get_flashed_messages() %}
+<div>{{ msg }}</div>
+{% endfor %}
 
+<form method='POST'>
+    {{ form.hidden_tag() }}
 
-    <div id='loginForm'>
-        <div>
-            <form>
-                <label for='username'>Username:</label>
-                <input type='text' name='username'>
-                <label for='password'>Password:</label>
-                <input type='password' name='password'>
-                <button>Login</button>
-            </form>
-        </div>
-    </div>
-    <div id='createAcc'>
+    {% for field in form
+        if field.widget.input_type != 'hidden' %}
+    <p>
+        {{ field.label }}
+        {{ field }}
 
-        <div>
-            <span>Doesn't have an account?</span>
-            <button>Create Account</button>
-        <div>
-
-    </div>
-</div>
+        {% for error in field.errors %}
+        {{ error }}
+        {% endfor %}
+    </p>
+    {% endfor %}
+    <button type='submit'>Log in</button>
 
 
-
+</form>
 
 {% endblock %}

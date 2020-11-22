@@ -19,7 +19,7 @@ i {
 }
 
 .search_input {
-	width: 80vw;
+	width: 75vw;
 }
 
 .form-control {
@@ -287,7 +287,8 @@ small {
 	transform: translateX(-50%);
 }
 
-#review_game_name {
+#review_game_name,
+#review_username {
 	background-color: transparent;
 	color: hsla(0, 0%, 100%, .6);
 }
