@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+<span id='title' class=''>{{ title }}</span>
+
+{% endblock %}
+
+
+{% block content %}
+
+<br>
+
+<br>
+
+<div id='reviews'>
+
+    {% if 'username' not in session %}
+
+    {% for review in reviews %}
+    <div class='review_card'>
+		<div class='review_title'>{{ review.title }}</div>
+		<div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
+		
+		<div class='review_text'>{{ review.review }}</div>
+		<div class='review_user'><small>Created by: <a href='/{{ review.username }}/collection'>{{ review.username }}</small></a></div>
+	</div>
+    {% endfor %}
+    
+    {% endif %}
+
+    {% if 'username' in session %}
+
+    {% for review in reviews %}
+    <div class='review_card'>
+		<div class='review_title'>{{ review.title }}</div>
+		<div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
+		
+		<div class='review_text'>{{ review.review }}</div>
+        <div class='review_user'><small>Created by: <a href='/{{ review.username }}/collection'>{{ review.username }}</small></a>
+        
+            {% if session['username'] ==  review.username %}
+            <button class='delete-button' data-review-id='{{ review.id }}'>DELETE</button>
+            {% endif %}
+        
+        
+        </div>
+	</div>
+    {% endfor %}
+    
+    {% endif %}
+
+
+
+    
+
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}{{ function }}{% endblock %}

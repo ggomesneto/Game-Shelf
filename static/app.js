@@ -259,29 +259,11 @@ async function getCollection(id) {
 	// for (item of collection)
 }
 
-// THIS FUNCTION REMOVE SOME DIVS FROM THE HTML, ADDS A NEW BACKGROUND, GETS THE REVIEWS FROM THE DATABASE AND ADD THEM TO THE HTML
+// THIS FUNCTION IS JUST TO FIX SOME CSS FOR THE REVIEWS
 async function getReviews() {
 	$('body').css('background-image', `url(/static/review_background.jpg)`);
 	$('body').css('background-size', `100% 100%`);
-	$('#result_search').remove();
-	$('#main_content').append(`<div id='reviews'></div>`);
 	$('#result_search').css('grid-template-columns', 'repeat(auto-fill, minmax(550px, 1fr))');
-	const resp = await axios.get(`http://127.0.0.1:5000/api/reviews`);
-	for (review of resp.data.reviews) {
-		let reviewMarkup = `
-	
-	<div class='review_card'>
-		<div class='review_title'>${review.title}</div>
-		<div class='review_game'><a href='/games/${review.game_slug}'>${review.game_name}</a></div>
-		
-		<div class='review_text'>${review.review}</div>
-		<div class='review_user'><small>Created by: <a href='/${review.username}/collection'>${review.username}</small></a></div>
-	</div>
-		
-	`;
-
-		$('#reviews').append(reviewMarkup);
-	}
 }
 
 //CLASS THAT ORGANIZES EACH GAME AFTER RETRIEVED FROM THE API.
@@ -322,6 +304,17 @@ $(document).on('keypress', '#add_form', function(e) {
 	}
 });
 
+$(document).on('click', '.delete-button', async function(evt) {
+	evt.preventDefault();
+
+	let reviewId = $(this).attr('data-review-id');
+	console.log(reviewId);
+
+	await axios.delete(`/api/review/${reviewId}`);
+
+	$(this).parent().parent().remove();
+});
+
 // MEDIA QUERY FOR MENU - MADE HERE INSTEAD OF ON THE CSS FILE JUST TO SHOW THAT IT CAN BE DONE. IT HIDES ONE MENU AND SHOWS ANOTHER DEPENDING ON TH WINDOW SIZE
 
 function mediaQuery(x) {
@@ -331,11 +324,13 @@ function mediaQuery(x) {
 		$('#main_content').css('width', '100vw');
 		$('#dropdownMenuButton').css('display', 'inline-block');
 		$('.navbar').css('justify-content', 'inherit');
+		$('.review_card').css('width', '90%');
 	} else {
 		$('#main_content').css('width', '85vw');
 		$('#lateral_menu').css('display', 'block');
 		$('#dropdownMenuButton').css('display', 'none');
 		$('.navbar').css('justify-content', 'space-between');
+		$('.review_card').css('width', '50%');
 	}
 }
 

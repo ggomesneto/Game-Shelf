@@ -112,6 +112,18 @@ def add_review(id):
 
         return redirect(f"/games/{id}")
 
+@app.route('/reviews')
+def reviews_route():
+    '''SHOW LIST OF LAST ADDED REVIEWS, FROM ALL THE GAMES'''
+    title='Last added reviews'
+
+    reviews = Review.query.all()
+
+    function= Markup('<script> getReviews();</script>')
+
+    return render_template('reviews.html',title=title, function=function, reviews=reviews)
+
+
 @app.route('/genres/<id>')
 def genres_route(id):
     '''ROUTE TO SEARCH BY GENRE'''
@@ -156,14 +168,21 @@ def search_route():
 
     return render_template('index.html', title=title, function=function)
 
-@app.route('/reviews')
-def reviews_route():
-    '''SHOW LIST OF LAST ADDED REVIEWS, FROM ALL THE GAMES'''
-    title='Last added reviews'
-    function= Markup('<script> getReviews();</script>')
 
-    return render_template('index.html',title=title, function=function)
+@app.route('/<id>/collection')
+def collection_page(id):
 
+    user = User.query.filter_by(username=id).first()
+
+    if user:
+        title=f"{user.username} Collection:"
+        function = Markup(f"<script> getPlatInfo(); getCollection('{id}')</script>")
+        return render_template('index.html', title=title, function=function)
+    else:
+        return redirect('/')
+
+
+# ----------------LOGIN / LOGOUT / REGISTER ---------------
 @app.route('/login', methods=['GET','POST'])
 def login_route():
 
@@ -220,18 +239,6 @@ def logout():
     session.pop('username')
     return redirect('/')
 
-@app.route('/<id>/collection')
-def collection_page(id):
-
-    user = User.query.filter_by(username=id).first()
-
-    if user:
-        title=f"{user.username} Collection:"
-        function = Markup(f"<script> getPlatInfo(); getCollection('{id}')</script>")
-        return render_template('index.html', title=title, function=function)
-    else:
-        return redirect('/')
-
 
 # ----------------- ROUTES TO REQUEST DATA FROM DATABASE ---------------------
 @app.route('/api/reviews')
@@ -249,6 +256,14 @@ def get_collection(id):
 
     return jsonify(collection=collection)
 
+@app.route('/api/review/<id>', methods=['DELETE'])
+def delete_review(id):
 
+    review = Review.query.get(id)
+
+    db.session.delete(review)
+    db.session.commit()
+    
+    return jsonify(message='Deleted')
 
     
