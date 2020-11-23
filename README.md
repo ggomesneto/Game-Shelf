@@ -78,6 +78,8 @@ You can find a list of requirements under the requirements.txt file, but I decid
 
 ## Database draft:
 
+![Database](https://github.com/ggomesneto/capstone1/blob/main/database.png)
+
 	"""Models for database"""
 	from flask_sqlalchemy import SQLAlchemy
 
