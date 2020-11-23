@@ -348,7 +348,7 @@ def delete_review(id):
     '''ROUTE TO DELETE A REVIEW'''
 
     # SELECT THE REVIEW BY ITS ID AND DELETE THEM.
-    review = Review.query.get(id)
+    review = Review.query.get_or_404(id)
 
     db.session.delete(review)
     db.session.commit()
