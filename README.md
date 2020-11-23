@@ -37,6 +37,10 @@ In addition to that, when online, the user will be able to create his/hers own c
 
 One of the biggest obstacles I had was to work with the combination of data from the database and from the API. For example, to append the correct button, depending if the user is logged or not, or if the user has that specific game on his/hers collection or not. On the app.py file there is a route exclusively to send the 'logged in' information to the frontend, so the JS functions I wrote could use the right markup to show the game cards. As I said above, I wanted to write different ways of getting the same result, not only to show it is possible but also to learn how to do it.
 
+### PASSWORD PROTECTION
+
+Each password is salted and encrypted using BCrypt, using the wrapper **flask-bcrypt** and the hash is saved on the database. This adds a layer of security to the password and make it harder to be cracked.
+
 ### REQUIREMENTS
 
 You can find a list of requirements under the requirements.txt file, but I decided to add the list here too.
