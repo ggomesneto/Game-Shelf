@@ -136,15 +136,9 @@ small {
 	font-size: 70%;
 }
 
-/* .addFav {
-	background-color: red;
-	border-radius: 50%;
-	position: absolute;
-	right: 0px;
-	z-index: 1;
-	font-size: 1.5em;
-	color: white;
-} */
+.fa-trash:hover {
+	cursor: pointer;
+}
 
 #game_info {
 	width: 60%;

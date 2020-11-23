@@ -136,6 +136,11 @@
                     
                     <div class='review_text'>{{ review.review }}</div>
                     <div class='review_user'><small>Created by:<a href='/{{ review.username }}/collection'>{{ review.username }}</small></a></div>
+                    {% if session['username'] ==  review.username %}
+                    <i class="fas fa-trash delete-button" data-review-id='{{ review.id }}'></i>
+        
+                    
+                    {% endif %}
                 </div>
 
                 {% endfor %}

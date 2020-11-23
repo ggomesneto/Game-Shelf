@@ -40,7 +40,9 @@
         <div class='review_user'><small>Created by: <a href='/{{ review.username }}/collection'>{{ review.username }}</small></a>
         
             {% if session['username'] ==  review.username %}
-            <button class='delete-button' data-review-id='{{ review.id }}'>DELETE</button>
+            <i class="fas fa-trash delete-button" data-review-id='{{ review.id }}'></i>
+
+            
             {% endif %}
         
         
