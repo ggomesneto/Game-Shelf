@@ -62,8 +62,12 @@ async function getDataGenre(genreName) {
 
 	let result = gameArr.map((game) => new Game(game));
 
+	let checkLogged = await axios.get(`/islogged`);
+
+	let data = checkLogged.data;
+
 	for (let game of result) {
-		let gameHTML = generateCardHTML(game);
+		let gameHTML = generateCardHTML(game, data);
 		$('#result_search').append(gameHTML);
 	}
 }
@@ -85,8 +89,12 @@ async function mainSearch(searchText) {
 	nextPage = response.data.next;
 	let result = gameArr.map((game) => new Game(game));
 
+	let checkLogged = await axios.get(`/islogged`);
+
+	let data = checkLogged.data;
+
 	for (let game of result) {
-		let gameHTML = await generateCardHTML(game);
+		let gameHTML = await generateCardHTML(game, data);
 		$('#result_search').append(gameHTML);
 	}
 }
@@ -146,8 +154,12 @@ async function getDataPlat(platName) {
 
 	let result = gameArr.map((game) => new Game(game));
 
+	let checkLogged = await axios.get(`/islogged`);
+
+	let data = checkLogged.data;
+
 	for (let game of result) {
-		let gameHTML = generateCardHTML(game);
+		let gameHTML = generateCardHTML(game, data);
 		$('#result_search').append(gameHTML);
 	}
 }
@@ -156,17 +168,22 @@ async function getDataPlat(platName) {
 async function startSearch() {
 	let response = await axios.get(`${startSearchUrl}`);
 	let gameArr = response.data.results;
+	console.log(gameArr);
 	nextPage = response.data.next;
 	let result = gameArr.map((game) => new Game(game));
 
+	let checkLogged = await axios.get(`/islogged`);
+
+	let data = checkLogged.data;
+
 	for (let game of result) {
-		let gameHTML = await generateCardHTML(game);
+		let gameHTML = await generateCardHTML(game, data);
 		$('#result_search').append(gameHTML);
 	}
 }
 
 //CREATES THE MARKUP FOR EACH GAME CARD
-async function generateCardHTML(game) {
+async function generateCardHTML(game, data) {
 	let gameName = game.name;
 	let gameRel = game.released;
 	let gameImg = game.image;
@@ -174,10 +191,15 @@ async function generateCardHTML(game) {
 	let platforms = game.platforms;
 	let slug = game.slug;
 	let genres = game.genres;
+	let playtime = game.playtime;
 
 	// CHECK IF THE API HAS A METACRITIC SCORE. IF NOT, SET IT TO 'NA'
 	if (metacritic === null) {
 		metacritic = 'NA';
+	}
+
+	if (playtime === '0 hrs') {
+		playtime = 'NA';
 	}
 
 	// EACH GAME HAS DIFFERENT PLATFORMS. THIS FOR LOOP IS TO CHECK THE PLATFORMS THE GAME HAS AND ADD THE ICON REFERRED TO THE PLATFORM TO THE MARKUP.
@@ -197,12 +219,8 @@ async function generateCardHTML(game) {
 	}
 
 	// CHECK IF USER IS LOGGED IN. IF YES, GET THE LIST OF THE USER'S FAVORITED GAME AND MODIFY THE MARKUP IF THE GAME IS IN THE USER'S COLLECTION OR NOT.
-	let response = await axios.get(`/islogged`);
-
-	let data = response.data;
-	let slugList = data.game_slug;
-
 	if (data.islogged === true) {
+		let slugList = data.game_slug;
 		if (slugList.includes(slug)) {
 			favIcon = `<button class='btn btn-danger addFav' data-game-slug=${slug} id='favorite'>X</button>`;
 		} else {
@@ -247,7 +265,8 @@ async function generateCardHTML(game) {
 
                             <ul class=" list-group-flush card_list">
                                 <li class="list-group-item">Release Date:<span class='card-data'>${gameRel}</span></li>
-                                <li class="list-group-item">Genre:<small>${markupList}</small></li>
+								<li class="list-group-item">Genre:<small>${markupList}</small></li>
+								<li class="list-group-item">Avg Playtime:<span class='card-data'>${playtime}</span></li>
                                 
 								
                             </ul>
@@ -306,6 +325,7 @@ class Game {
 		this.platforms = [];
 		this.slug = gameObj.slug;
 		this.genres = gameObj.genres;
+		this.playtime = gameObj.playtime + ' hrs';
 		for (let platform of gameObj.platforms) {
 			this.platforms.push(platform.platform.name);
 		}
