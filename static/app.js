@@ -5,7 +5,7 @@ const BASE_URL = 'https://api.rawg.io/api';
 // EACH API REQUEST SEND A LINK FOR THE 'NEXT PAGE' RESULTS. I ADDED A EMPTY VARIABLE SO I CAN USE THE DATA GLOBALLY
 let nextPage = '';
 
-// GETTING DATES FOR THE FIRST SEARCH - TRENDING ON THE LAST YEAR
+// GETTING DATES FOR THE FIRST SEARCH = TRENDING ON THE LAST YEAR
 
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
@@ -68,7 +68,7 @@ async function getDataGenre(genreName) {
 	}
 }
 
-//THIS USES THE TITLE OF THE PAGE TO KNOW WHAT NEEDS TO BE SEARCHED. IT CALLS mainSearch TO GET THE GAMES
+//THIS EMPTIES THE RESULTS DIV, USES THE TITLE OF THE PAGE TO KNOW WHAT NEEDS TO BE SEARCHED. IT CALLS mainSearch TO GET THE GAMES
 async function searchBox() {
 	$('#result_search').empty();
 
@@ -86,7 +86,7 @@ async function mainSearch(searchText) {
 	let result = gameArr.map((game) => new Game(game));
 
 	for (let game of result) {
-		let gameHTML = generateCardHTML(game);
+		let gameHTML = await generateCardHTML(game);
 		$('#result_search').append(gameHTML);
 	}
 }
@@ -116,7 +116,7 @@ async function getPlatInfo() {
 	}
 }
 
-//THIS USES THE TITLE OF THE PAGE TO KNOW WHAT NEEDS TO BE SEARCHED. IT CALLS getDataPlat TO GET THE GAMES
+//THIS EMPTIES THE RESULTS DIV, USES THE TITLE OF THE PAGE TO KNOW WHAT NEEDS TO BE SEARCHED. IT CALLS getDataPlat TO GET THE GAMES
 async function getPlatform() {
 	$('#result_search').empty();
 
@@ -175,10 +175,12 @@ async function generateCardHTML(game) {
 	let slug = game.slug;
 	let genres = game.genres;
 
+	// CHECK IF THE API HAS A METACRITIC SCORE. IF NOT, SET IT TO 'NA'
 	if (metacritic === null) {
 		metacritic = 'NA';
 	}
 
+	// EACH GAME HAS DIFFERENT PLATFORMS. THIS FOR LOOP IS TO CHECK THE PLATFORMS THE GAME HAS AND ADD THE ICON REFERRED TO THE PLATFORM TO THE MARKUP.
 	let icon = '';
 
 	for (platform of platforms) {
@@ -194,18 +196,23 @@ async function generateCardHTML(game) {
 		}
 	}
 
+	// CHECK IF USER IS LOGGED IN. IF YES, GET THE LIST OF THE USER'S FAVORITED GAME AND MODIFY THE MARKUP IF THE GAME IS IN THE USER'S COLLECTION OR NOT.
 	let response = await axios.get(`/islogged`);
+
 	let data = response.data;
 	let slugList = data.game_slug;
 
-	if ((data.islogged = true)) {
+	if (data.islogged === true) {
 		if (slugList.includes(slug)) {
-			favIcon = `<button class='btn btn-dark addFav' data-game-slug=${slug} id='favorite'>Remove from Collection</button>`;
+			favIcon = `<button class='btn btn-danger addFav' data-game-slug=${slug} id='favorite'>X</button>`;
 		} else {
-			favIcon = `<button class='btn btn-dark addFav' data-game-slug=${slug} id='favorite'>Add to Collection</button>`;
+			favIcon = `<button class='btn btn-success addFav' data-game-slug=${slug} id='favorite'>+</button>`;
 		}
+	} else {
+		favIcon = `<a href='/login'><button class='btn btn-success addFav' data-game-slug=${slug}>+</button></a>`;
 	}
 
+	// EACH GAME CAN HAVE MULTIPLE GENRES. THIS FOR LOOP CHECKS ALL GENRES AND CONCATENATES THEM TOGETHER ON THE MARKUP
 	let markupList = '';
 
 	for (g of genres) {
@@ -217,13 +224,15 @@ async function generateCardHTML(game) {
 		let genre_markup = `<a href='/genres/${genreSlug}' class='genre'><span class='card-data mr-1'>${g.name}</span></a>`;
 		markupList = markupList + genre_markup;
 	}
-
+	// GAME CARD THAT WILL BE APPENDED ON THE HTML
 	const gameMarkup = $(`
     
     
         <div class="col card_search">
-            
-                    <div class="card">
+		
+					<div class="card">
+					
+					
                         <img class="card-img-top" src="${gameImg}" alt="Card image cap">
                         <div class="card-body">
                             <div class='container-fluid icons'>
@@ -232,9 +241,9 @@ async function generateCardHTML(game) {
                             </div> 
                             <a href='/games/${slug}'><h5 class="card-title">${gameName}</h5></a>
 
-							
+							<div class='text-center'>
 							<a href='/games/${slug}/review'><button class='btn btn-dark' id='add-review'>ADD REVIEW</button></a>${favIcon}
-                            
+                            </div>
 
                             <ul class=" list-group-flush card_list">
                                 <li class="list-group-item">Release Date:<span class='card-data'>${gameRel}</span></li>
@@ -253,20 +262,29 @@ async function generateCardHTML(game) {
 }
 
 // THIS FUNCTION CREATES A FOR LOOP TO GET THE COLLECTION FROM THE USER.
-async function getCollection(id, is_same_user) {
+async function getCollection(id, user_logged) {
 	let response = await axios.get(`/api/${id}/collection`);
-	console.log(response);
+
 	let collection = response.data.collection;
 	let collectionArr = [];
+
+	// MAKES A FOR LOOP REQUESTING THE DATA FROM EACH GAME TO THE API.
 	for (game of collection) {
 		let apiCall = await axios.get(`${BASE_URL}/games/${game.game_slug}`);
 		collectionArr.push(apiCall.data);
 	}
+
+	// MAPS THE GAMES AND RUN THEN ON THE CLASS GAME
 	let result = collectionArr.map((game) => new Game(game));
 
+	//GENERATE THE MARKUP FOR EACH GAME
 	for (let game of result) {
 		let gameHTML = await generateCardHTML(game);
 		$('#result_search').append(gameHTML);
+	}
+
+	//IF THE USER IS LOGGED IN, ADDS A CLASS TO THE 'FAVORITE BUTTON' THIS CLASS HAS AN EVENT LISTENER THAT REMOVES THE GAME CARD FROM THE SCREEN WITH THE USER DECIDES TO REMOVE THE GAME FROM THE COLLECTION LIST.
+	if (id === user_logged) {
 		$('.addFav').addClass('fav');
 	}
 }
@@ -294,8 +312,9 @@ class Game {
 	}
 }
 
-// THIS FUNCTION IS A INFINITE SCROLL THAT USES THE NEXTPAGE DATA TO MAKE AN API CALL WHENEVER THE USER SCROLLS TO THE END OF THE PAGE.
+// -------------------------EVENT LISTENERS ------------------------------
 
+// THIS FUNCTION IS A INFINITE SCROLL THAT USES THE NEXTPAGE DATA TO MAKE AN API CALL WHENEVER THE USER SCROLLS TO THE END OF THE PAGE.
 $('#main_content').scroll(async function() {
 	if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
 		let response = await axios.get(`${nextPage}`);
@@ -310,12 +329,16 @@ $('#main_content').scroll(async function() {
 	}
 });
 
+// THIS IS JUST TO PREVENT THE USER FROM SUBMITING THE FORMS BY MISTAKE BY PRESSING ENTER TO CHANGE FROM ONE FORM INPUT TO ANOTHER
 $(document).on('keypress', '#add_form', function(e) {
 	if (e.which == 13) {
 		e.preventDefault();
 	}
 });
 
+// THIS EVENT LISTENER GETS THE ATTR 'REVIEW ID' FROM A REVIEW AND MAKES AN API REQUEST TO DELETE IT. ON THE BACKEND THERE IS A CHECK TO SEE IF THE
+// LOGGED USER IS THE SAME AS THE CREATOR OF THE REVIEW.
+// THE MARKUP FOR REVIEWS ARE SET IN A WAY THAT THE DELETE BUTTON WOULD ONLY APPEAR FOR THE REVIEW'S CREATOR.
 $(document).on('click', '.delete-button', async function(evt) {
 	evt.preventDefault();
 
@@ -327,21 +350,27 @@ $(document).on('click', '.delete-button', async function(evt) {
 	$(this).parent().parent().remove();
 });
 
+// ADD/REMOVE FAVORITE. CHANGES THE BUTTON FROM ADD TO REMOVE WHEN CLICKED. ALSO SENDS A POST OR A DELETE REQUEST BASED ON THE BUTTON THERE IS BEING SHOWN.
 $(document).on('click', '#favorite', async function() {
 	let inner = $(this)[0].innerText;
 	let slug = $(this).attr('data-game-slug');
-	if (inner === 'Add to Collection') {
+	if (inner === '+') {
 		let addFav = await axios.post(`/api/favorite`, {
 			slug
 		});
-		console.log(addFav.data);
-		$(this).text('Remove from Collection');
-	} else if (inner === 'Remove from Collection') {
+
+		$(this).text('X');
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-danger');
+	} else if (inner === 'X') {
 		let addFav = await axios.delete(`/api/favorite/${slug}`);
-		$(this).text('Add to Collection');
+		$(this).text('+');
+		$(this).removeClass('btn-danger');
+		$(this).addClass('btn-success');
 	}
 });
 
+//BUTTONS WITH THIS CLASS WILL ONLY SHOW UP WHEN THE USER IS LOGGED IN AND CHECKING HIS/HERS OWN COLLECTION PAGE. IT REMOVES THE GAME CARD FROM THE HTML IF THE USER DECIDES TO REMOVE THE GAME FROM THE COLLECTION LIST.
 $(document).on('click', '.fav', function() {
 	$(this).parent().parent().parent().remove();
 });

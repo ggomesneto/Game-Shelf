@@ -81,7 +81,6 @@ i {
 	transition: 0.5s ease;
 	min-height: 240px;
 	padding: 5px;
-	border-radius: 35px;
 }
 
 .card_search:hover {
@@ -136,6 +135,16 @@ i {
 small {
 	font-size: 70%;
 }
+
+/* .addFav {
+	background-color: red;
+	border-radius: 50%;
+	position: absolute;
+	right: 0px;
+	z-index: 1;
+	font-size: 1.5em;
+	color: white;
+} */
 
 #game_info {
 	width: 60%;
