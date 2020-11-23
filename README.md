@@ -28,6 +28,15 @@ Since this is a student's project, I'll try to comment as much as possible on th
 
 **GAME SHELF** is a game library that shows information about games, platforms, game genres and more specific data, such as game released date, or developers name. The users will be able to search for the information they need, create an account and post reviews, rate games and add games to their personal collection.
 
+## USER FLOW
+
+When offline, the user will be able to search for a game, genre or platform, read other people's reviews and check user's collections.
+In addition to that, when online, the user will be able to create his/hers own collection and add reviews to the game.
+
+## UNDERSTANDING FUNCTIONALITIES
+
+One of the biggest obstacles I had was to work with the combination of data from the database and from the API. For example, to append the correct button, depending if the user is logged or not, or if the user has that specific game on his/hers collection or not. On the app.py file there is a route exclusively to send the 'logged in' information to the frontend, so the JS functions I wrote could use the right markup to show the game cards. As I said above, I wanted to write different ways of getting the same result, not only to show it is possible but also to learn how to do it.
+
 ### REQUIREMENTS
 
 You can find a list of requirements under the requirements.txt file, but I decided to add the list here too.
