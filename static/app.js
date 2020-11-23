@@ -160,13 +160,13 @@ async function startSearch() {
 	let result = gameArr.map((game) => new Game(game));
 
 	for (let game of result) {
-		let gameHTML = generateCardHTML(game);
+		let gameHTML = await generateCardHTML(game);
 		$('#result_search').append(gameHTML);
 	}
 }
 
 //CREATES THE MARKUP FOR EACH GAME CARD
-function generateCardHTML(game) {
+async function generateCardHTML(game) {
 	let gameName = game.name;
 	let gameRel = game.released;
 	let gameImg = game.image;
@@ -191,6 +191,18 @@ function generateCardHTML(game) {
 			} else {
 				icon = icon.concat(iconHTML);
 			}
+		}
+	}
+
+	let response = await axios.get(`/islogged`);
+	let data = response.data;
+	let slugList = data.game_slug;
+
+	if ((data.islogged = true)) {
+		if (slugList.includes(slug)) {
+			favIcon = `<button class='btn btn-dark addFav' data-game-slug=${slug} id='favorite'>Remove from Collection</button>`;
+		} else {
+			favIcon = `<button class='btn btn-dark addFav' data-game-slug=${slug} id='favorite'>Add to Collection</button>`;
 		}
 	}
 
@@ -221,7 +233,7 @@ function generateCardHTML(game) {
                             <a href='/games/${slug}'><h5 class="card-title">${gameName}</h5></a>
 
 							
-							<button class='btn btn-dark' id='add-review'>ADD REVIEW</button><button class='btn btn-dark' id='favorite'>ADD FAVORITE</button>
+							<a href='/games/${slug}/review'><button class='btn btn-dark' id='add-review'>ADD REVIEW</button></a>${favIcon}
                             
 
                             <ul class=" list-group-flush card_list">
@@ -241,9 +253,9 @@ function generateCardHTML(game) {
 }
 
 // THIS FUNCTION CREATES A FOR LOOP TO GET THE COLLECTION FROM THE USER.
-async function getCollection(id) {
+async function getCollection(id, is_same_user) {
 	let response = await axios.get(`/api/${id}/collection`);
-
+	console.log(response);
 	let collection = response.data.collection;
 	let collectionArr = [];
 	for (game of collection) {
@@ -251,12 +263,12 @@ async function getCollection(id) {
 		collectionArr.push(apiCall.data);
 	}
 	let result = collectionArr.map((game) => new Game(game));
-	for (let game of result) {
-		let gameHTML = generateCardHTML(game);
-		$('#result_search').append(gameHTML);
-	}
 
-	// for (item of collection)
+	for (let game of result) {
+		let gameHTML = await generateCardHTML(game);
+		$('#result_search').append(gameHTML);
+		$('.addFav').addClass('fav');
+	}
 }
 
 // THIS FUNCTION IS JUST TO FIX SOME CSS FOR THE REVIEWS
@@ -313,6 +325,25 @@ $(document).on('click', '.delete-button', async function(evt) {
 	await axios.delete(`/api/review/${reviewId}`);
 
 	$(this).parent().parent().remove();
+});
+
+$(document).on('click', '#favorite', async function() {
+	let inner = $(this)[0].innerText;
+	let slug = $(this).attr('data-game-slug');
+	if (inner === 'Add to Collection') {
+		let addFav = await axios.post(`/api/favorite`, {
+			slug
+		});
+		console.log(addFav.data);
+		$(this).text('Remove from Collection');
+	} else if (inner === 'Remove from Collection') {
+		let addFav = await axios.delete(`/api/favorite/${slug}`);
+		$(this).text('Add to Collection');
+	}
+});
+
+$(document).on('click', '.fav', function() {
+	$(this).parent().parent().parent().remove();
 });
 
 // MEDIA QUERY FOR MENU - MADE HERE INSTEAD OF ON THE CSS FILE JUST TO SHOW THAT IT CAN BE DONE. IT HIDES ONE MENU AND SHOWS ANOTHER DEPENDING ON TH WINDOW SIZE

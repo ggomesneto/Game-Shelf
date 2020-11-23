@@ -267,3 +267,49 @@ def delete_review(id):
     return jsonify(message='Deleted')
 
     
+@app.route('/islogged')
+def is_logged():
+
+    if 'username' in session:
+        username = session['username']
+        favorites = [favorite.serialize()['game_slug'] for favorite in Collection.query.filter_by(username=username)]
+
+        return jsonify(islogged=True, username=username, game_slug=favorites)
+
+    else:
+        return jsonify(islogged=False)
+
+@app.route('/api/favorite', methods=['POST'])
+def add_favorite():
+
+    if 'username' in session:
+        username = session['username']
+        slug = request.json['slug']
+
+        favorite = Collection(username=username, game_slug=slug)
+
+        db.session.add(favorite)
+        db.session.commit()
+        response_json = jsonify(favorite=favorite.serialize())
+        return (response_json, 201)
+    else:
+        flash('You must be logged in to view')
+        return redirect('/login')
+        
+
+@app.route('/api/favorite/<slug>', methods=['DELETE'])
+def delete_favorite(slug):
+
+    if 'username' in session:
+        username = session['username']
+        slug = slug
+
+        favorite = Collection.query.filter_by(username=username).filter_by(game_slug=slug).first()
+
+        db.session.delete(favorite)
+        db.session.commit()
+        
+        return jsonify(message='Deleted')
+    else:
+        flash('You must be logged in to view')
+        return redirect('/login')
