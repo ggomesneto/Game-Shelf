@@ -28,15 +28,15 @@ Since this is a student's project, I'll try to comment as much as possible on th
 
 ## TODO LIST
 
-- [x] MAIN PAGE
-- [x] GAME PAGE
-- [x] REVIEWS PAGE
+- [x] ~~MAIN PAGE~~
+- [x] ~~GAME PAGE~~
+- [x] ~~REVIEWS PAGE~~
 - [ ] EDIT REVIEW
-- [x] FLASK ROUTES
+- [x] ~~FLASK ROUTES~~
 - [ ] USER PROFILE
-- [x] DATABASE MODELS
-- [x] FORM MODELS
-- [x] LOGIN / AUTHENTICATION / PASSWORD HASHING
+- [x] ~~DATABASE MODELS~~
+- [x] ~~FORM MODELS~~
+- [x] ~~LOGIN / AUTHENTICATION / PASSWORD HASHING~~
 
 ## USER FLOW
 
