@@ -2,8 +2,6 @@
 ---
 ![Main Page](https://github.com/ggomesneto/capstone1/blob/main/Game%20Shelf.jpeg)
 
-## ABOUT ME
-
 ## ABOUT THE PROJECT
 
 The intention of this project is to create a Full-Stack application using all the technologies learned up to this point (~35%) on **Springboard's Software Engineering Career Track course**. 
@@ -27,6 +25,18 @@ Since this is a student's project, I'll try to comment as much as possible on th
 ## THE SITE
 
 **GAME SHELF** is a game library that shows information about games, platforms, game genres and more specific data, such as game released date, or developers name. The users will be able to search for the information they need, create an account and post reviews, rate games and add games to their personal collection.
+
+## TODO LIST
+
+- [x] MAIN PAGE
+- [x] GAME PAGE
+- [x] REVIEWS PAGE
+- [ ] EDIT REVIEW
+- [x] FLASK ROUTES
+- [ ] USER PROFILE
+- [x] DATABASE MODELS
+- [x] FORM MODELS
+- [x] LOGIN / AUTHENTICATION / PASSWORD HASHING
 
 ## USER FLOW
 
