@@ -49,6 +49,7 @@ async function getGenre() {
 		genreName = 'role-playing-games-rpg';
 	}
 
+	await getPlatInfo();
 	await getDataGenre(genreName);
 }
 
@@ -67,7 +68,7 @@ async function getDataGenre(genreName) {
 	let data = checkLogged.data;
 
 	for (let game of result) {
-		let gameHTML = generateCardHTML(game, data);
+		let gameHTML = await generateCardHTML(game, data);
 		$('#result_search').append(gameHTML);
 	}
 }
@@ -159,7 +160,7 @@ async function getDataPlat(platName) {
 	let data = checkLogged.data;
 
 	for (let game of result) {
-		let gameHTML = generateCardHTML(game, data);
+		let gameHTML = await generateCardHTML(game, data);
 		$('#result_search').append(gameHTML);
 	}
 }
@@ -349,8 +350,12 @@ $('#main_content').scroll(async function() {
 		nextPage = response.data.next;
 		let result = gameArr.map((game) => new Game(game));
 
+		let checkLogged = await axios.get(`/islogged`);
+
+		let data = checkLogged.data;
+
 		for (let game of result) {
-			let gameHTML = generateCardHTML(game);
+			let gameHTML = await generateCardHTML(game, data);
 			$('#result_search').append(gameHTML);
 		}
 	}

@@ -3,6 +3,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 import requests
 from sqlalchemy import desc, exc
 
+import os
+
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt()
 
@@ -12,15 +14,17 @@ from forms import RegisterForm, LoginForm, EditUserForm
 
 app = Flask(__name__)
 
+
 '''BOILER PLATE FOR SQLALCHEMY, DEBUGTOOLBAR AND FLASK'''
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///gameshelf'
-app.config['SECRET_KEY'] = 'abc'
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL', "postgresql:///gameshelf")
+app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY_','hellosecret1')
+app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_ECHO"] = True
 debug = DebugToolbarExtension(app)
 
 connect_db(app)
+
 db.create_all()
 
 @app.route('/')
