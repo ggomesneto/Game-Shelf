@@ -3,9 +3,11 @@ from flask_debugtoolbar import DebugToolbarExtension
 import requests
 from sqlalchemy import desc, exc
 
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt()
 
 from models import db, connect_db, User, Collection, Review
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, EditUserForm 
 
 
 app = Flask(__name__)
@@ -208,7 +210,6 @@ def search_route():
 
     return render_template('index.html', title=title, function=function)
 
-
 @app.route('/<id>/collection')
 def collection_page(id):
     '''ROUTE FOR THE COLLECTION PAGE'''
@@ -225,7 +226,7 @@ def collection_page(id):
 
         if 'username' in session:
             user_logged = session['username']
-            title=f"{user.username} Collection:"
+            title=Markup(f"<a href='/{ user.username }/profile'>{user.username}</a> Collection:")
 
 
             # THE getPlatInfo FUNCTION IS EXPLAINED IN DEPTH ON THE JS FILE
@@ -233,7 +234,7 @@ def collection_page(id):
             # SINCE THE REQUEST AND THE APPEND IS MADE WITH JS, I HAVE TO CREATE A FUNCTION THAT REQUIRES BOTH THE
             # USERNAME OF LOGGED IN USER AND THE USERNAME OF THE COLLECTION'S OWNER TO COMPARE THEN.
 
-            function = Markup(f"<script> getPlatInfo(); getCollection('{id}','{user_logged}')</script>")
+            function = Markup(f"<script> getCollection('{id}','{user_logged}')</script>")
             return render_template('index.html', title=title, function=function)
         else:
             user_logged = ''
@@ -251,6 +252,48 @@ def collection_page(id):
     else:
         # IF THERE IS NO USER WITH THE ID SPECIFIED ON THE URL, REDIRECT IT TO THE MAIN PAGE
         return redirect('/')
+
+@app.route('/<id>/profile', methods=['GET'])
+def profile_page(id):
+
+    user = User.query.filter_by(username=id).first()
+
+    if user:
+    
+        reviews = Review.query.filter_by(username=id).all()
+        title = f"{id} Profile"
+
+        return render_template('profile.html', user=user, reviews=reviews, title=title)
+    else:
+        return redirect('/')
+
+@app.route('/<id>/profile/edit', methods=['GET', 'POST'])
+def edit_profile(id):
+
+    user = User.query.filter_by(username=id).first()
+    title = f"{id} Profile"
+
+    if user and session['username'] == user.username:
+        form = EditUserForm(obj=user)
+
+        if form.validate_on_submit():
+            
+            password = form.password.data
+
+            hashed = bcrypt.generate_password_hash(password)
+            hashed_utf8 = hashed.decode('utf8')
+
+            user.password = hashed_utf8
+            user.first_name = form.first_name.data
+            user.last_name = form.last_name.data
+            db.session.commit()
+            return redirect(f"/{id}/profile")
+        else:
+            return render_template('profile_edit.html', form=form, user=user, title=title)
+    
+    else:
+        return redirect('/')
+        
 
 
 # ----------------LOGIN / LOGOUT / REGISTER ---------------
@@ -350,10 +393,13 @@ def delete_review(id):
     # SELECT THE REVIEW BY ITS ID AND DELETE THEM.
     review = Review.query.get_or_404(id)
 
-    db.session.delete(review)
-    db.session.commit()
-    
-    return jsonify(message='Deleted')
+    if review and review.username == session['username']:
+        db.session.delete(review)
+        db.session.commit()
+
+        return jsonify(message='Deleted')
+    else:
+        return redirect('/')
 
 @app.route('/islogged')
 def is_logged():

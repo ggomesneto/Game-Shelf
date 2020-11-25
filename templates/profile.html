@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+<span id='title' class=''>{{ user.username }} Profile:</span>
+
+{% endblock %}
+
+
+{% block content %}
+
+<br>
+
+<br>
+
+<form>
+    <div class="form-group">
+      <label for="game_name">First Name:</label>
+      <input type="text" readonly class="form-control-plaintext" id="review_game_name" value="{{ user.first_name }}">
+    </div>
+    <div class="form-group">
+        <label for="game_name">Last Name:</label>
+        <input type="text" readonly class="form-control-plaintext" id="review_game_name" value="{{ user.last_name }}">
+    </div>
+
+    {% if 'username' in session %}
+    {% if session['username'] == user.username %}
+    <div class="form-group">
+        <label for="game_name">Password:</label>
+        <input type="password" readonly class="form-control-plaintext" id="review_game_name" value="XXXX">
+    </div>
+</form>
+    <a href='/{{ user.username }}/profile/edit'><button type="submit" class="btn btn-primary">Edit</button></a>
+    {% endif %}
+    {% endif %}
+    
+
+<h3>Reviews</h3>
+<div id='reviews'>
+
+    {% if 'username' not in session %}
+
+    {% for review in reviews %}
+    <div class='review_card'>
+		<div class='review_title'>{{ review.title }}</div>
+		<div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
+		
+		<div class='review_text'>{{ review.review }}</div>
+		<div class='review_user'><small>Created by: <a href='/{{ review.username }}/collection'>{{ review.username }}</small></a></div>
+	</div>
+    {% endfor %}
+    
+    {% endif %}
+
+    {% if 'username' in session %}
+
+    {% for review in reviews %}
+    <div class='review_card'>
+		<div class='review_title'>{{ review.title }}</div>
+		<div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
+		
+		<div class='review_text'>{{ review.review }}</div>
+        <div class='review_user'><small>Created by: <a href='/{{ review.username }}/collection'>{{ review.username }}</small></a>
+        
+            {% if session['username'] ==  review.username %}
+            <i class="fas fa-trash delete-button" data-review-id='{{ review.id }}'></i>
+
+            
+            {% endif %}
+        
+        
+        </div>
+	</div>
+    {% endfor %}
+    
+    {% endif %}
+
+
+
+
+
+{% endblock %}
+
+{% block script %}{% endblock %}

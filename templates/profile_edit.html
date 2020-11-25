@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+<span id='title' class=''>{{ user.username }} Profile:</span>
+
+{% endblock %}
+
+
+{% block content %}
+
+<br>
+
+<br>
+
+<form id='profile-edit-form' method='POST'>
+    {{ form.hidden_tag() }}
+
+    {% for field in form
+        if field.widget.input_type != 'hidden' %}
+    
+    <p>
+        {{ field.label }}
+        {{ field }}
+
+        {% for error in field.errors %}
+        {{ error }}
+        {% endfor %}
+
+    </p>
+
+    {% endfor %}
+    <button type='submit'>Submit</button>
+</form>
+
+
+
+
+{% endblock %}
+
+{% block script %}{% endblock %}

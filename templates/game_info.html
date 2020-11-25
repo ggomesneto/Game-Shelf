@@ -17,7 +17,12 @@
             <div id='game_info_left'>
                 <div id='buttons' class='text-center'>
                     <a href='/games/{{ slug }}/review'><button type="button" class="btn btn-lg btn-light"><small>Write a</small><br>Review</button></a>
-                    <button type="button" class="btn btn-lg btn-light"><small>Save to</small><br>My games</button>
+                    {% if 'username' in session %}
+                    <button type="button" data-game-slug='{{ slug }}' id='favorite-pg' class="btn btn-lg btn-success"><small>Save to</small><br>My Games</button>
+                    {% endif %}
+                    {% if 'username' not in session %}
+                    <a href='/login'><button type="button" data-game-slug='{{ slug }}'  class="btn btn-lg btn-success"><small>Save to</small><br>My Games</button></a>
+                    {% endif %}
                 </div>
                 <br>
                 <div id='about'>

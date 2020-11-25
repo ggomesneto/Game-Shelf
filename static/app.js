@@ -168,7 +168,7 @@ async function getDataPlat(platName) {
 async function startSearch() {
 	let response = await axios.get(`${startSearchUrl}`);
 	let gameArr = response.data.results;
-	console.log(gameArr);
+
 	nextPage = response.data.next;
 	let result = gameArr.map((game) => new Game(game));
 
@@ -284,6 +284,8 @@ async function generateCardHTML(game, data) {
 async function getCollection(id, user_logged) {
 	let response = await axios.get(`/api/${id}/collection`);
 
+	await getPlatInfo();
+
 	let collection = response.data.collection;
 	let collectionArr = [];
 
@@ -296,9 +298,14 @@ async function getCollection(id, user_logged) {
 	// MAPS THE GAMES AND RUN THEN ON THE CLASS GAME
 	let result = collectionArr.map((game) => new Game(game));
 
+	//CHECK IF USER IS LOGGED IN. IF YES, GET THE FAV LIST.
+	let checkLogged = await axios.get(`/islogged`);
+
+	let data = checkLogged.data;
+
 	//GENERATE THE MARKUP FOR EACH GAME
 	for (let game of result) {
-		let gameHTML = await generateCardHTML(game);
+		let gameHTML = await generateCardHTML(game, data);
 		$('#result_search').append(gameHTML);
 	}
 
@@ -363,7 +370,6 @@ $(document).on('click', '.delete-button', async function(evt) {
 	evt.preventDefault();
 
 	let reviewId = $(this).attr('data-review-id');
-	console.log(reviewId);
 
 	await axios.delete(`/api/review/${reviewId}`);
 
@@ -385,6 +391,26 @@ $(document).on('click', '#favorite', async function() {
 	} else if (inner === 'X') {
 		let addFav = await axios.delete(`/api/favorite/${slug}`);
 		$(this).text('+');
+		$(this).removeClass('btn-danger');
+		$(this).addClass('btn-success');
+	}
+});
+
+$(document).on('click', '#favorite-pg', async function() {
+	let inner = $(this)[0].innerHTML;
+
+	let slug = $(this).attr('data-game-slug');
+	if (inner === '<small>Save to</small><br>My Games') {
+		let addFav = await axios.post(`/api/favorite`, {
+			slug
+		});
+
+		$(this).html('<small>Remove from</small><br>My Games');
+		$(this).removeClass('btn-success');
+		$(this).addClass('btn-danger');
+	} else if (inner === '<small>Remove from</small><br>My Games') {
+		let addFav = await axios.delete(`/api/favorite/${slug}`);
+		$(this).text('<small>Save to</small><br>My Games');
 		$(this).removeClass('btn-danger');
 		$(this).addClass('btn-success');
 	}
