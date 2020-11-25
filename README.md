@@ -58,17 +58,19 @@ If you want to download the code and run on your machine, here's what you have t
 
 In another terminal, go to the folder where you unziped the code. Run those lines on the terminal:
 
-- python3 -m venv venv              
-- source venv/bin/activate          
-- pip3 install flask                
-- pip3 install flask-debugtoolbar
-- pip3 install flask-wtf
-- pip3 install psycopg2-binary
-- pip3 install flask-sqlalchemy
-- pip3 install ipython
-- pip3 install requests
-- pip3 install flask-bcrypt
-- flask run
+```bash
+python3 -m venv venv             
+source venv/bin/activate          
+pip3 install flask                
+pip3 install flask-debugtoolbar
+pip3 install flask-wtf
+pip3 install psycopg2-binary
+pip3 install flask-sqlalchemy
+pip3 install ipython
+pip3 install requests
+pip3 install flask-bcrypt
+flask run
+```
 
 You will be installing flask, the debugtoolbar, WTforms, SQLAlchemy, ipython, Requests and Flask-Bcrypt.
 The last line is to start running the web app. After that you should access the web app using the url address displayed on the terminal.
