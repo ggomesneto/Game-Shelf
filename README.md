@@ -31,9 +31,8 @@ Since this is a student's project, I'll try to comment as much as possible on th
 - [x] ~~MAIN PAGE~~
 - [x] ~~GAME PAGE~~
 - [x] ~~REVIEWS PAGE~~
-- [ ] EDIT REVIEW
 - [x] ~~FLASK ROUTES~~
-- [ ] USER PROFILE
+- [x] ~~USER PROFILE~~
 - [x] ~~DATABASE MODELS~~
 - [x] ~~FORM MODELS~~
 - [x] ~~LOGIN / AUTHENTICATION / PASSWORD HASHING~~
