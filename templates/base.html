@@ -40,7 +40,7 @@
               Menu
             </button>
             <div class="dropdown-menu text-center text-white bg-dark" aria-labelledby="dropdownMenuButton">
-                
+                <a href='/reviews'><h4>REVIEWS</h4></a>
                 <h5>GENRE</h5>
                 <a class="nav-link genre" href="/genres/action"><i class="fas fa-khanda"></i>Action</a>
                 <a class="nav-link genre" href="/genres/strategy"><i class="fas fa-chess-pawn"></i>Strategy</a>
@@ -98,8 +98,26 @@
             </div>
             
             
-            
         
+        </div>
+        <div id='snackbar' class='show'>
+            <a target='_blank' href='https://github.com/ggomesneto/Game-Shelf'>
+            <div>
+                <span class='snckhdr'>Made with:</span>
+                <br>
+                <span class='snckmsg'>
+                    <img data-toggle="tooltip" data-placement="top" title="BootStrap" src='/static/bootstrap.png'>
+                    <img data-toggle="tooltip" data-placement="top" title="CSS" src='/static/css.png'>
+                    <img data-toggle="tooltip" data-placement="top" title="Git" src='/static/git.png'>
+                    <img data-toggle="tooltip" data-placement="top" title="HTML5" src='/static/html5.png'>
+                    <img data-toggle="tooltip" data-placement="top" title="JavaScript" src='/static/javascript.png'>
+                    <img data-toggle="tooltip" data-placement="top" title="PostgreSQL" src='/static/postgres.png'>
+                    <img data-toggle="tooltip" data-placement="top" title="Python" src='/static/python.png'>
+                    <img data-toggle="tooltip" data-placement="top" title="VSCode" src='/static/vscode1.png'>
+                </span>
+            </div>
+            </a>
+            <span id='hlclose' >X</span>
         </div>
 
 
@@ -123,7 +141,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
     <script src='/static/app.js'></script>
+    
+        
     {% block script %} {% endblock %}
+
+
     
 </body>
 </html>

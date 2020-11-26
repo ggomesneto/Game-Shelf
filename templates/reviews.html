@@ -23,7 +23,7 @@
 		<div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
 		
 		<div class='review_text'>{{ review.review }}</div>
-		<div class='review_user'><small>Created by: <a href='/{{ review.username }}/collection'>{{ review.username }}</small></a></div>
+		<div class='review_user'><small>Created by: <img class='profile-pic-small' src='{{review.user.image }}'></small><a href='/{{ review.username }}/collection'>{{ review.username }}</a></div>
 	</div>
     {% endfor %}
     
@@ -37,7 +37,7 @@
 		<div class='review_game'><a href='/games/{{ review.game_slug }}'>{{ review.game_name }}</a></div>
 		
 		<div class='review_text'>{{ review.review }}</div>
-        <div class='review_user'><small>Created by: <a href='/{{ review.username }}/collection'>{{ review.username }}</small></a>
+        <div class='review_user'><small>Created by: <img class='profile-pic-small' src='{{review.user.image }}'></small><a href='/{{ review.username }}/collection'>{{ review.username }}</a>
         
             {% if session['username'] ==  review.username %}
             <i class="fas fa-trash delete-button" data-review-id='{{ review.id }}'></i>

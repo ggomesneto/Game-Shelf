@@ -32,6 +32,7 @@ i {
 
 .form-control:hover {
 	background-color: white;
+	color: black;
 }
 
 #main_content {
@@ -141,7 +142,7 @@ small {
 }
 
 #game_info {
-	width: 60%;
+	width: 70%;
 	height: 100%;
 	font-family: 'Exo', sans-serif;
 
@@ -260,6 +261,7 @@ small {
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
+	display: inline-block;
 }
 
 .review_title,
@@ -295,4 +297,72 @@ small {
 #review_username {
 	background-color: transparent;
 	color: hsla(0, 0%, 100%, .6);
+}
+
+#profile-pick {
+	width: 160px;
+	height: 160px;
+}
+
+.profile-pic-small {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin: 20px;
+}
+
+#snackbar {
+	font-family: Arial;
+	line-height: 1em;
+	visibility: hidden;
+	width: 200px;
+	min-width: 200px;
+	max-width: 300px;
+	background-color: white;
+	border-radius: 2px;
+	padding: 10px;
+	position: fixed;
+	z-index: 100;
+	bottom: 0px;
+	left: 0px;
+	font-size: 17px;
+	margin: 1%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	color: black;
+}
+
+#snackbar.show {
+	visibility: visible;
+	-webkit-animation: fadein 0.5s;
+	animation: fadein 0.5s;
+}
+
+#snackbar a:hover {
+	text-decoration: none;
+}
+.snckhdr {
+	font-weight: bold;
+	color: black;
+	margin-bottom: 10px;
+	font-size: 1.1em;
+	width: 100%;
+}
+
+.snckmsg {
+	color: #4e4e4e;
+	font-size: 0.85em;
+}
+
+.snckmsg img {
+	width: 40px;
+}
+
+#hlclose {
+	position: absolute;
+	float: right;
+	display: inline-block;
+	padding: 2px 5px;
+	top: 3px;
+	right: 5px;
+	cursor: pointer;
 }

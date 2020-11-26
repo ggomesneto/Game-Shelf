@@ -16,18 +16,18 @@
 <form>
     <div class="form-group">
       <label for="game_name">First Name:</label>
-      <input type="text" readonly class="form-control-plaintext" id="review_game_name" value="{{ user.first_name }}">
+      <input type="text" readonly class="form-control-plaintext" id="edit_first_name" value="{{ user.first_name }}">
     </div>
     <div class="form-group">
         <label for="game_name">Last Name:</label>
-        <input type="text" readonly class="form-control-plaintext" id="review_game_name" value="{{ user.last_name }}">
+        <input type="text" readonly class="form-control-plaintext" id="edit_last_name" value="{{ user.last_name }}">
     </div>
 
     {% if 'username' in session %}
     {% if session['username'] == user.username %}
     <div class="form-group">
         <label for="game_name">Password:</label>
-        <input type="password" readonly class="form-control-plaintext" id="review_game_name" value="XXXX">
+        <input type="password" readonly class="form-control-plaintext" id="edit_password" value="XXXX">
     </div>
 </form>
     <a href='/{{ user.username }}/profile/edit'><button type="submit" class="btn btn-primary">Edit</button></a>

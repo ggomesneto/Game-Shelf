@@ -146,7 +146,7 @@ def reviews_route():
     title='Last added reviews'
 
     # GETS ALL THE REVIEWS AND SHOW THEM ON THE PAGE
-    reviews = Review.query.all()
+    reviews = Review.query.order_by(desc(Review.id)).all()
 
     # IM ADDING A SCRIPT ON THE HTML FILE, SO IT WILL ACTIVATE THE FUNCTIONS I NEED FROM TH APP.JS FILE
     function= Markup('<script> getReviews();</script>')
@@ -230,7 +230,7 @@ def collection_page(id):
 
         if 'username' in session:
             user_logged = session['username']
-            title=Markup(f"<a href='/{ user.username }/profile'>{user.username}</a> Collection:")
+            title=f"{user.username} Collection:"
 
 
             # THE getPlatInfo FUNCTION IS EXPLAINED IN DEPTH ON THE JS FILE
@@ -290,6 +290,7 @@ def edit_profile(id):
             user.password = hashed_utf8
             user.first_name = form.first_name.data
             user.last_name = form.last_name.data
+            user.image = form.image.data or None
             db.session.commit()
             return redirect(f"/{id}/profile")
         else:

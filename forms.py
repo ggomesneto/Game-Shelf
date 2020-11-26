@@ -22,3 +22,4 @@ class EditUserForm(FlaskForm):
     first_name = StringField('First Name', validators=[InputRequired()])
     last_name = StringField('Last Name', validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
+    image = StringField('Image Url')

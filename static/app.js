@@ -448,3 +448,7 @@ function mediaQuery(x) {
 var x = window.matchMedia('(max-width: 700px)');
 mediaQuery(x); // Call listener function at run time
 x.addEventListener('change', mediaQuery); // Attach listener function on state changes
+
+$(document).on('click', '#hlclose', function() {
+	$(this).parent().remove();
+});

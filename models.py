@@ -20,10 +20,11 @@ class User(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)
+    image = db.Column(db.Text, default='https://shorturl.at/ntF29')
 
 
     favorites = db.relationship('Collection')
-    reviews = db.relationship('Review')
+    reviews = db.relationship('Review', backref='user')
 
     def __repr__(self):
         return f"<User {self.username} {self.first_name} {self.last_name}>"
