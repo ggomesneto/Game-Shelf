@@ -366,3 +366,9 @@ small {
 	right: 5px;
 	cursor: pointer;
 }
+
+#edit_password,
+#edit_last_name,
+#edit_first_name {
+	color: hsla(0, 0%, 100%, .7);
+}
