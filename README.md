@@ -6,7 +6,7 @@
 
 ## ABOUT THE PROJECT
 
-The intention of this project is to create a Full-Stack application using all the technologies learned up to this point (~35%) on **Springboard's Software Engineering Career Track course**. 
+The intention of this project is to create a Full-Stack application using all the technologies learned up to this point (~45%) on **Springboard's Software Engineering Career Track course**. 
 
 This project, called **GAME SHELF** uses the following technologies:
 
@@ -117,6 +117,16 @@ You can find a list of requirements under the requirements.txt file, but I decid
 ## API: 
 **https://rawg.io/apidocs**
 
-## Database draft:
+## Database:
 
 ![Database](https://github.com/ggomesneto/capstone1/blob/main/database.png)
+
+The database is pretty simple and by using certaing constraints with WTForms, and relationships between models, I can avoid duplication on the Collection Model and make sure that reviews can only be added with an existing user_id.
+
+## Testing:
+
+There is a file for testing where I test the models User, Collection and Review. The important part is to check the 'register' and 'authentication' class methods to make sure that the login and register process work as expected.
+
+# Comments:
+
+I believe this project was pretty useful for my development. I had to learn not only the aspects of what makes a page looks nice and the 'responsiveness' of the page, but also about constraints, flask routes, API requests and much more. In the future some of the features will be replaced with new methods that I still didn't learn.
