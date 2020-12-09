@@ -1,151 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Shelf - {{title}}</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Game Shelf - {{title}}</title>
 
-    <link rel='stylesheet' href='/static/app.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+            integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-    crossorigin="anonymous">
+        <link rel='stylesheet' href='/static/app.css'>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Exo&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" crossorigin="anonymous"
+            integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-</head>
-<body>
-    <div id='opacity-back'></div>
-    <nav class="navbar sticky-top navbar-light">
-        <a class="nav-link" href="/">Home</a>
-        {% if 'username' not in session %}
-        <a class="nav-link" href="/register">Sign Up</a>
-        <a class="nav-link" href="/login">Login</a>
-        {% endif %}
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Exo&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 
-        {% if 'username' in session %}
-        <a class='nav-link' href='/{{ session["username"] }}/profile'>Profile</a>
-        <a class='nav-link' href="/{{ session['username'] }}/collection">Collection</a>
-        <a class='nav-link' href='/logout'>Logout</a>
-      
-        {% endif %}
 
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Menu
-            </button>
-            <div class="dropdown-menu text-center text-white bg-dark" aria-labelledby="dropdownMenuButton">
-                <a href='/reviews'><h4>REVIEWS</h4></a>
-                <h5>GENRE</h5>
-                <a class="nav-link genre" href="/genres/action"><i class="fas fa-khanda"></i>Action</a>
-                <a class="nav-link genre" href="/genres/strategy"><i class="fas fa-chess-pawn"></i>Strategy</a>
-                <a class="nav-link genre" href="/genres/rpg"><i class="fas fa-dice"></i>RPG</a>
-                <a class="nav-link genre" href="/genres/shooter"><i class="fas fa-crosshairs"></i>Shooter</a>
-                <a class="nav-link genre" href="/genres/adventure"><i class="fas fa-gem"></i>Adventure</a>
-                <a class="nav-link genre" href="/genres/puzzle"><i class="fas fa-puzzle-piece"></i>Puzzle</a>
-                <a class="nav-link genre" href="/genres/racing"><i class="fas fa-flag-checkered"></i>Racing</a>
-                <a class="nav-link genre" href="/genres/sports"><i class="fas fa-football-ball"></i>Sports</a>
-                <H5>PLATFORM</H5>
-                <a class="nav-link platform" href="/platforms/4"><i class="fas fa-desktop"></i>PC</a>
-                <a class="nav-link platform" href="/platforms/18"><i class="fab fa-playstation"></i>Playstation 4</a>
-                <a class="nav-link platform" href="/platforms/1"><i class="fab fa-xbox"></i>Xbox One</a>
-                <a class="nav-link platform" href="/platforms/7"><i class="fab fa-neos"></i>Nintendo Switch</a>
-                <a class="nav-link platform" href="/platforms/3"><i class="fab fa-apple"></i>IOS</a>
-                <a class="nav-link platform" href="/platforms/21"><i class="fab fa-android"></i>Android</a>
+    </head>
 
+    <body>
+        <div id='opacity-back'></div>
+        <nav class="navbar sticky-top navbar-light">
+            <a class="nav-link" href="/">Home</a>
+            {% if 'username' not in session %}
+            <a class="nav-link" href="/register">Sign Up</a>
+            <a class="nav-link" href="/login">Login</a>
+            {% endif %}
+
+            {% if 'username' in session %}
+            <a class='nav-link' href='/{{ session["username"] }}/profile'>Profile</a>
+            <a class='nav-link' href="/{{ session['username'] }}/collection">Collection</a>
+            <a class='nav-link' href='/logout'>Logout</a>
+
+            {% endif %}
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu
+                </button>
+                <div class="dropdown-menu text-center text-white bg-dark" aria-labelledby="dropdownMenuButton">
+                    <a href='/reviews'>
+                        <h4>REVIEWS</h4>
+                    </a>
+                    <h5>GENRE</h5>
+                    <a class="nav-link genre" href="/genres/action"><i class="fas fa-khanda"></i>Action</a>
+                    <a class="nav-link genre" href="/genres/strategy"><i class="fas fa-chess-pawn"></i>Strategy</a>
+                    <a class="nav-link genre" href="/genres/rpg"><i class="fas fa-dice"></i>RPG</a>
+                    <a class="nav-link genre" href="/genres/shooter"><i class="fas fa-crosshairs"></i>Shooter</a>
+                    <a class="nav-link genre" href="/genres/adventure"><i class="fas fa-gem"></i>Adventure</a>
+                    <a class="nav-link genre" href="/genres/puzzle"><i class="fas fa-puzzle-piece"></i>Puzzle</a>
+                    <a class="nav-link genre" href="/genres/racing"><i class="fas fa-flag-checkered"></i>Racing</a>
+                    <a class="nav-link genre" href="/genres/sports"><i class="fas fa-football-ball"></i>Sports</a>
+                    <H5>PLATFORM</H5>
+                    <a class="nav-link platform" href="/platforms/4"><i class="fas fa-desktop"></i>PC</a>
+                    <a class="nav-link platform" href="/platforms/18"><i class="fab fa-playstation"></i>Playstation
+                        4</a>
+                    <a class="nav-link platform" href="/platforms/1"><i class="fab fa-xbox"></i>Xbox One</a>
+                    <a class="nav-link platform" href="/platforms/7"><i class="fab fa-neos"></i>Nintendo Switch</a>
+                    <a class="nav-link platform" href="/platforms/3"><i class="fab fa-apple"></i>IOS</a>
+                    <a class="nav-link platform" href="/platforms/21"><i class="fab fa-android"></i>Android</a>
+
+                </div>
             </div>
-        </div>
-        <form id='search_box' action='/search'>
-            <div class='search_input text-center'>
-                <input type='text' class='form-control' name='search' placeholder='Search Here'>
-            </div>
+            <form id='search_box' action='/search'>
+                <div class='search_input text-center'>
+                    <input type='text' class='form-control' name='search' placeholder='Search Here'>
+                </div>
 
-        </form>
-    </nav>
+            </form>
+        </nav>
 
-    <div id='main' class='container-fluid'>
-        <div id='lateral_menu' class='text-center'>
-            <br>
-            <br>
-            <a href='/reviews'><h4>REVIEWS</h4></a>
-            <h4>GENRE</h4>
-            <div class='container text-left'>
-                <a class="nav-link genre" href="/genres/action"><i class="fas fa-khanda"></i>Action</a>
-                <a class="nav-link genre" href="/genres/strategy"><i class="fas fa-chess-pawn"></i>Strategy</a>
-                <a class="nav-link genre" href="/genres/rpg"><i class="fas fa-dice"></i>RPG</a>
-                <a class="nav-link genre" href="/genres/shooter"><i class="fas fa-crosshairs"></i>Shooter</a>
-                <a class="nav-link genre" href="/genres/adventure"><i class="fas fa-gem"></i>Adventure</a>
-                <a class="nav-link genre" href="/genres/puzzle"><i class="fas fa-puzzle-piece"></i>Puzzle</a>
-                <a class="nav-link genre" href="/genres/racing"><i class="fas fa-flag-checkered"></i>Racing</a>
-                <a class="nav-link genre" href="/genres/sports"><i class="fas fa-football-ball"></i>Sports</a>
-            </div>
-
-            <br>
-
-            <h4>PLATFORMS</h4>
-            <div class='container text-left'>
-                <a class="nav-link platform" href="/platforms/4"><i class="fas fa-desktop"></i>PC</a>
-                <a class="nav-link platform" href="/platforms/18"><i class="fab fa-playstation"></i>Playstation 4</a>
-                <a class="nav-link platform" href="/platforms/1"><i class="fab fa-xbox"></i>Xbox One</a>
-                <a class="nav-link platform" href="/platforms/7"><i class="fab fa-neos"></i>Nintendo Switch</a>
-                <a class="nav-link platform" href="/platforms/3"><i class="fab fa-apple"></i>IOS</a>
-                <a class="nav-link platform" href="/platforms/21"><i class="fab fa-android"></i>Android</a>
-            </div>
-            
-            
-        
-        </div>
-        <div id='snackbar' class='show'>
-            <a target='_blank' href='https://github.com/ggomesneto/Game-Shelf'>
-            <div>
-                <span class='snckhdr'>Made with:</span>
+        <div id='main' class='container-fluid'>
+            <div id='lateral_menu' class='text-center'>
                 <br>
-                <span class='snckmsg'>
-                    <img data-toggle="tooltip" data-placement="top" title="BootStrap" src='/static/bootstrap.png'>
-                    <img data-toggle="tooltip" data-placement="top" title="CSS" src='/static/css.png'>
-                    <img data-toggle="tooltip" data-placement="top" title="Git" src='/static/git.png'>
-                    <img data-toggle="tooltip" data-placement="top" title="HTML5" src='/static/html5.png'>
-                    <img data-toggle="tooltip" data-placement="top" title="JavaScript" src='/static/javascript.png'>
-                    <img data-toggle="tooltip" data-placement="top" title="PostgreSQL" src='/static/postgres.png'>
-                    <img data-toggle="tooltip" data-placement="top" title="Python" src='/static/python.png'>
-                    <img data-toggle="tooltip" data-placement="top" title="VSCode" src='/static/vscode1.png'>
-                </span>
+                <br>
+                <a href='/reviews'>
+                    <h4>REVIEWS</h4>
+                </a>
+                <h4>GENRE</h4>
+                <div class='container text-left'>
+                    <a class="nav-link genre" href="/genres/action"><i class="fas fa-khanda"></i>Action</a>
+                    <a class="nav-link genre" href="/genres/strategy"><i class="fas fa-chess-pawn"></i>Strategy</a>
+                    <a class="nav-link genre" href="/genres/rpg"><i class="fas fa-dice"></i>RPG</a>
+                    <a class="nav-link genre" href="/genres/shooter"><i class="fas fa-crosshairs"></i>Shooter</a>
+                    <a class="nav-link genre" href="/genres/adventure"><i class="fas fa-gem"></i>Adventure</a>
+                    <a class="nav-link genre" href="/genres/puzzle"><i class="fas fa-puzzle-piece"></i>Puzzle</a>
+                    <a class="nav-link genre" href="/genres/racing"><i class="fas fa-flag-checkered"></i>Racing</a>
+                    <a class="nav-link genre" href="/genres/sports"><i class="fas fa-football-ball"></i>Sports</a>
+                </div>
+
+                <br>
+
+                <h4>PLATFORMS</h4>
+                <div class='container text-left'>
+                    <a class="nav-link platform" href="/platforms/4"><i class="fas fa-desktop"></i>PC</a>
+                    <a class="nav-link platform" href="/platforms/18"><i class="fab fa-playstation"></i>Playstation
+                        4</a>
+                    <a class="nav-link platform" href="/platforms/1"><i class="fab fa-xbox"></i>Xbox One</a>
+                    <a class="nav-link platform" href="/platforms/7"><i class="fab fa-neos"></i>Nintendo Switch</a>
+                    <a class="nav-link platform" href="/platforms/3"><i class="fab fa-apple"></i>IOS</a>
+                    <a class="nav-link platform" href="/platforms/21"><i class="fab fa-android"></i>Android</a>
+                </div>
+
+
+
             </div>
-            </a>
-            <span id='hlclose' >X</span>
+            <div id='snackbar' class='show'>
+                <a target='_blank' href='https://github.com/ggomesneto/Game-Shelf'>
+                    <div>
+                        <span class='snckhdr'>Made with:</span>
+                        <br>
+                        <span class='snckmsg'>
+                            <img data-toggle="tooltip" data-placement="top" title="BootStrap"
+                                src='/static/bootstrap.png'>
+                            <img data-toggle="tooltip" data-placement="top" title="CSS" src='/static/css.png'>
+                            <img data-toggle="tooltip" data-placement="top" title="Git" src='/static/git.png'>
+                            <img data-toggle="tooltip" data-placement="top" title="HTML5" src='/static/html5.png'>
+                            <img data-toggle="tooltip" data-placement="top" title="JavaScript"
+                                src='/static/javascript.png'>
+                            <img data-toggle="tooltip" data-placement="top" title="PostgreSQL"
+                                src='/static/postgres.png'>
+                            <img data-toggle="tooltip" data-placement="top" title="Python" src='/static/python.png'>
+                            <img data-toggle="tooltip" data-placement="top" title="VSCode" src='/static/vscode1.png'>
+                        </span>
+                    </div>
+                </a>
+                <span id='hlclose'>X</span>
+            </div>
+
+
+            <div id='main_content'>
+
+                {% block title %}
+                {% endblock %}
+                {% block content %}
+                {% endblock %}
+
+
+
+
+
+            </div>
         </div>
 
 
-        <div id='main_content'>
-            
-           {% block title %}
-           {% endblock %}          
-            {% block content %}
-            {% endblock %}  
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/axios/dist/axios.js"></script>
+        <script src='/static/app.js'></script>
+
+
+        {% block script %} {% endblock %}
 
 
 
+    </body>
 
-
-        </div>
-    </div>
-  
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/axios/dist/axios.js"></script>
-    <script src='/static/app.js'></script>
-    
-        
-    {% block script %} {% endblock %}
-
-
-    
-</body>
 </html>
